@@ -9,7 +9,7 @@ user = get_user_id(sp)
 today = date.today()
 name = today.strftime("%d/%m/%Y")
 
-# get the playlist info -> song info from playlist -> audio features froms songs
+# get the playlist info -> song info from playlist -> audio features from songs
 playlist_ids = get_playlist_ids(sp)
 song_ids, song_names, song_uris = get_playlist_tracks(playlist_ids, sp)
 track_features = get_track_features(song_ids, song_names, song_uris, sp)
