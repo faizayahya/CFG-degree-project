@@ -1,3 +1,4 @@
+import random
 
 def select_mood_tracks(mood_score, tracks):
     selected_tracks = []
@@ -12,6 +13,7 @@ def select_mood_tracks(mood_score, tracks):
             if -0.05 < mood_score < 0.05:
                 if 0.3 < track['danceability'] < 0.6 and 0.3 < track['valence'] < 0.6:
                     selected_tracks.append(track)
+    random.shuffle(selected_tracks)
     return selected_tracks
 
 

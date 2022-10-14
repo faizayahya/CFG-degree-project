@@ -2,7 +2,6 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from settings import *
 
-
 def authenticate_spotify():
     SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
     SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
@@ -66,5 +65,4 @@ def get_track_features(song_ids_list, song_names_list, song_uris_list, sp):
         count += 1
 
     return list_song_audio_features
-
 

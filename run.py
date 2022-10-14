@@ -20,7 +20,7 @@ mood = mood_analysis(entry)
 
 # get the track lists based on an algo and creates a spotify playlist
 track_list = select_mood_tracks(mood, track_features)
-new_playlist_id = create_playlist(sp, user, name, track_list)
+new_playlist_id = create_playlist(sp, user, name, track_list[:20])
 
 # link to the new playlist
 print('Play your new playlist at https://open.spotify.com/playlist/{}'.format(new_playlist_id))
