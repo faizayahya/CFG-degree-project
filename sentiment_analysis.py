@@ -1,11 +1,12 @@
 import requests
 from settings import rapid_headers, rapid_url
 
+def mood_analysis(journal_entry):
+    querystring = {"text": journal_entry}
 
-entry = input("How are you feeling today?\n")
-querystring = {"text": entry}
+    response = requests.request("GET", rapid_url, headers=rapid_headers, params=querystring)
 
-response = requests.request("GET", rapid_url, headers=rapid_headers, params=querystring)
+    analysis = response.json()
+    mood_score = analysis["score"]
 
-analysis = response.json()
-mood_score = analysis["score"]
+    return mood_score
