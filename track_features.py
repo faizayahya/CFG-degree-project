@@ -2,9 +2,9 @@ class Track:
 
     def __init__(self):
         self.name = ''
-        self.id = ''
+        # self.id = ''
         self.uri = ''
-        self.playlist = ''
+        # self.playlist = ''
         self.danceability = 0
         self.energy = 0
         self.valence = 0
