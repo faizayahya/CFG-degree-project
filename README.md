@@ -28,8 +28,8 @@ ___
 * A user can see their historical data such as:
   * all playlist data 
   * all moods
-  * if users consistently get low mood scores this is flagged, 
-  and they are given links to mental health helplines or charities
+* if users consistently get low mood scores this is flagged, 
+and they are given links to mental health helplines or charities
 ___
 
 ## Setting Up The App
