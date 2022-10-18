@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎵🎵TEAM 6 CFG DEGREE PROJECT🎵🎵
 
 ## Our Members:
@@ -75,3 +76,8 @@ getting_keys_instructions/sentiment_analysis_keys.pdf
 
 
 
+=======
+# CFG-degree-project
+
+TBC
+>>>>>>> 6071572d0efbe5ed84e0891e41866836723b3c99
