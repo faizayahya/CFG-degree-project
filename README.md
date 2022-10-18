@@ -2,7 +2,7 @@
 # 🎵🎵TEAM 6 CFG DEGREE PROJECT🎵🎵
 
 ## Our Members:
-* Aaliya Manji
+* Aaliya Manji 
 * Humaira Hossain
 * Priyanka Kolvekar
 * Makayla Eraslan
