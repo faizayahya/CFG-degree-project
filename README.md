@@ -72,12 +72,3 @@ getting_keys_instructions/sentiment_analysis_keys.pdf
 * Copy and paste the URL and Headers into settings.py
 
 ### 7. Run the main file!
-
-
-
-
-=======
-# CFG-degree-project
-
-TBC
->>>>>>> 6071572d0efbe5ed84e0891e41866836723b3c99
