@@ -1,4 +1,4 @@
-from my_files.db_code_practice import PLAN_db_utils as db
+import db_files.db_utils as db
 from Menus.menus import Menus
 from Messages.messages import Messages
 import re
