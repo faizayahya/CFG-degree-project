@@ -3,7 +3,7 @@ from spotify_connect import *
 from track_features import *
 from create_playlist import create_playlist, select_mood_tracks
 from datetime import date
-from login import User
+from login_user import User
 from Messages.messages import Messages
 
 # authenticate spotify and get user and date details
