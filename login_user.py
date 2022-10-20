@@ -51,9 +51,9 @@ class User:
             email_entry = input('Please write your email address:')
 
             if User.email_is_valid(email_entry):
-                db.InAccountsTable.insert_new_user_to_db(self.username, self.password, self.email)
                 self.logged_in = True
                 self.email = email_entry
+                db.InAccountsTable.insert_new_user_to_db(self.username, self.password, self.email)
                 Messages.new_account_success_msg()
 
             else:

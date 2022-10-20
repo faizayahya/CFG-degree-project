@@ -5,7 +5,6 @@ from create_playlist import create_playlist, select_mood_tracks
 from datetime import date
 from login_user import User
 from Messages.messages import Messages
-from Menus.menus import Menus
 from db_files.db_utils import InPlaylistsTable
 
 
