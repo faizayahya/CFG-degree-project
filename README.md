@@ -1,5 +1,5 @@
-<<<<<<< HEAD
 # 🎵🎵TEAM 6 CFG DEGREE PROJECT🎵🎵
+### --Transform a journal entry into a Spotify playlist--
 
 ## Our Members:
 * Aaliya Manji 
