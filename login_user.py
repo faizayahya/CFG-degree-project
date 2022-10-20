@@ -88,26 +88,28 @@ class User:
         if db.InAccountsTable.authenticate_login_in_db(self.username, self.password):
             self.logged_in = True
 
+    def entry_made_check(self):
+        pass
+
+    @staticmethod
+    def end_menu_choices():
+        Menus.end_menu()
+        user_answer = input('')
+        if user_answer == '1':
+            # return True
+            # go toook at playlist and mood history
+            pass  # for now
+        elif user_answer == '2':
+            return False
+
     def logout(self):
-        self.username = None
-        self.password = None
-        self.email = None
-        self.logged_in = False
-        self.playlist = None
-        self.mood_score = None
-        self.entry_done = False
-        self.date = None
-
-
-
-# current_user = User()
-# if not current_user.has_account():
-#     Messages.register_msg()
-#     current_user.register()
-# else:
-#     current_user.login()
-# #
-# print(current_user.logged_in)
-# print(current_user.username)
-# print(current_user.email)
-# print(current_user.password)
+        if not User.end_menu_choices():
+            self.username = None
+            self.password = None
+            self.email = None
+            self.logged_in = False
+            self.playlist = None
+            self.mood_score = None
+            self.entry_done = False
+            self.date = None
+            Messages.quit_msg()

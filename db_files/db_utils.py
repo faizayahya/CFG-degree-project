@@ -43,8 +43,6 @@ class InAccountsTable:
             if db_conx:
                 db_conx.close()
 
-    # InAccountsTable.username_in_db_check('barbie')
-
     @staticmethod
     def insert_new_user_to_db(username, password, email):
         if not InAccountsTable.username_in_db_check(username):
@@ -66,8 +64,6 @@ class InAccountsTable:
 
         else:
             print('Looks like you already have an account with us!')
-
-    # InAccountsTable.insert_new_user_to_db("link", "hyaah", "im_not_zelda@email.com")
 
     @staticmethod
     def authenticate_login_in_db(username, password):
@@ -94,8 +90,6 @@ class InAccountsTable:
         finally:
             if db_conx:
                 db_conx.close()
-
-    # InAccountsTable.authenticate_login_in_db("link", "hyaah")
 
     @staticmethod
     def get_all_user_account_details():
@@ -138,7 +132,7 @@ class InPlaylistsTable:
                 db_conx.close()
 
     @staticmethod
-    def fetch_playlist_mood_data(username): # get copy of user's whole playlist history/mood history
+    def fetch_playlist_mood_data(username):  # get copy of user's whole playlist history/mood history
         try:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
@@ -155,9 +149,6 @@ class InPlaylistsTable:
         finally:
             if db_conx:
                 db_conx.close()
-        # then you need to create another method to loop through it to display it
-        # or try and pretty print it
-        # or print it in a table in terminal
 
     @staticmethod
     def entry_done_today(date):  # returns true if an entry has been made, false if no entry

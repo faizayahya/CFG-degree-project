@@ -5,6 +5,7 @@ from create_playlist import create_playlist, select_mood_tracks
 from datetime import date
 from login_user import User
 from Messages.messages import Messages
+from db_files.db_utils import InPlaylistsTable
 
 
 def main():
@@ -26,16 +27,16 @@ def main():
         current_user.login()
 
     ######## check if entry has already been made today by current user
-    ######## give end menu: look at history, logout
+    ######## current_user.logout()
 
     # input the journal entry and determine mood
     while True:
         try:
-            entry = input('How are you feeling today?\n')
+            entry = input('\nHow are you feeling today?\n')
             mood = mood_analysis(entry)
             # set user mood attribute
             current_user.mood_score = mood
-            print('Please wait, generating your playlist!')
+            print('\nPlease wait, generating your playlist!\n')
         except Exception as exc:
             print(exc)
         else:
@@ -49,15 +50,19 @@ def main():
     # get the track lists based on an algo and creates a spotify playlist
     track_list = select_mood_tracks(mood, track_features)
     new_playlist_id = create_playlist(sp, user, name, track_list[:20])
+
     # set user playlist attribute
     current_user.playlist = "https://open.spotify.com/playlist/{}".format(new_playlist_id)
 
+    # insert playlist data, mood, user in playlist table
+    InPlaylistsTable.insert_playlist_to_db(current_user.username, current_user.playlist,
+                                           current_user.mood_score, current_user.date)
+
     # link to the new playlist
-    print('Play your new playlist at https://open.spotify.com/playlist/{}'.format(new_playlist_id))
+    print('\nPlay your new playlist at https://open.spotify.com/playlist/{}\n\n'.format(new_playlist_id))
 
-    ####### give end menu: look at history, logout
+    current_user.logout()
 
-    # to check user attributes:
     # print('\nThese are the current user attributes:\n')
     # print(f'mood_score:{current_user.mood_score}')
     # print(f"playlist link: {current_user.playlist}")
@@ -65,6 +70,7 @@ def main():
     # print(f"username: {current_user.username}")
     # print(f"email: {current_user.email}")
     # print(f"pword: {current_user.password}")
+
 
 if __name__ == "__main__":
     main()
