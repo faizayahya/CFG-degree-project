@@ -22,7 +22,7 @@ email VARCHAR(100) NOT NULL
 create_playlists_table_query = """
 CREATE TABLE IF NOT EXISTS playlists (
 username VARCHAR(30) NOT NULL PRIMARY KEY,
-playlist_link VARCHAR(200),
+link VARCHAR(200),
 mood_score FLOAT NOT NULL,
 date DATE NOT NULL
 );

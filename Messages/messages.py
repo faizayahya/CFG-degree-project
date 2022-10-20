@@ -27,3 +27,7 @@ class Messages:
     @staticmethod
     def new_account_success_msg():
         print('New account successfully created')
+
+    @staticmethod
+    def entry_already_made_msg():
+        print("\nSeems like you've already generated a playlist today!\n")
