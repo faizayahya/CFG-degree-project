@@ -118,8 +118,8 @@ class InPlaylistsTable:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""INSERT INTO playlists (username, playlist_link, mood_score)
-            VALUES {username}, {playlist}, {mood_score}, {date}"""
+            query = f"""INSERT INTO playlists (username, link, mood_score, date)
+            VALUES ('{username}', '{playlist}', {mood_score}, str_to_date("{date}", "%d/%m/%Y"));"""
 
             my_cursor.execute(query)
             db_conx.commit()
@@ -131,13 +131,15 @@ class InPlaylistsTable:
             if db_conx:
                 db_conx.close()
 
+
+
     @staticmethod
     def fetch_playlist_mood_data(username):  # get copy of user's whole playlist history/mood history
         try:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""SELECT date, playlist_link, mood FROM playlists WHERE username = {username}"""
+            query = f"""SELECT date, playlist_link, mood FROM playlists WHERE username = '{username}'"""
 
             my_cursor.execute(query)
             result = my_cursor.fetchall()
@@ -151,16 +153,18 @@ class InPlaylistsTable:
                 db_conx.close()
 
     @staticmethod
-    def entry_done_today(date):  # returns true if an entry has been made, false if no entry
+    def entry_made_check_db(username, date):  # returns true if an entry has been made, false if no entry
         try:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""SELECT username FROM playlist WHERE date = '{date}'"""
+            query = f"""SELECT username, date FROM playlists
+            WHERE date = str_to_date("{date}", "%d/%m/%Y") and username = '{username}'"""
+
             my_cursor.execute(query)
             result = my_cursor.fetchall()
 
-            if result[0][0] == IndexError:  # if there is no result that means no entry made by user
+            if result == []:  # if there is no result that means no entry made by user
                 return False
             else:
                 return True
