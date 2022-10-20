@@ -1,3 +1,3 @@
 HOST = "localhost"
 USER = "root"
-PASSWORD = "YOUR DB PASSWORD"
+PASSWORD = "Doct0rWh0!"
