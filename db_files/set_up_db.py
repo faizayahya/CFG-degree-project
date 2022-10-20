@@ -7,12 +7,6 @@ from db_config import HOST, USER, PASSWORD
 # USER = ""
 # PASSWORD = ""
 
-#########################################
-#                                       #
-#  Go to MySQL, execute the following:  #
-#     CREATE DATABASE SpotifyAppDB;     #
-#                                       #
-#########################################
 
 # make sure mysql-connector-python is installed
 
@@ -29,8 +23,10 @@ email VARCHAR(100) NOT NULL
 create_playlists_table_query = """
 CREATE TABLE IF NOT EXISTS playlists (
 username VARCHAR(30) NOT NULL PRIMARY KEY,
-date DATE NOT NULL,
-link VARCHAR(200)
+
+link VARCHAR(200),
+mood_score FLOAT NOT NULL,
+date DATE NOT NULL
 );
 """
 
