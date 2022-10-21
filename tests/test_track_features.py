@@ -1,7 +1,7 @@
 # Priyanka
 
 from unittest import TestCase, main
-from functions.track_features import *
+from ..functions.track_features import *
 
 class TestTracksClass(TestCase):
     pass

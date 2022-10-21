@@ -1,7 +1,7 @@
 # Faiza
 
 from unittest import TestCase, main
-from functions.create_playlist import *
+from ..functions.create_playlist import *
 
 
 class TestSelectMoodTracksFunction(TestCase):

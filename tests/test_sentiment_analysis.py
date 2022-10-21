@@ -1,7 +1,8 @@
 # Aaliya
 
 from unittest import TestCase, main
-from functions.sentiment_analysis import mood_analysis
+from ..functions.sentiment_analysis import mood_analysis
+
 
 class TestMoodAnalysisFunction(TestCase):
     def test_positive_sentiment(self):
@@ -28,6 +29,7 @@ class TestMoodAnalysisFunction(TestCase):
         my_input = "verry goood"
         with self.assertRaises(Exception):
             mood_analysis(my_input)
+
 
 if __name__ == "__main__":
     main()

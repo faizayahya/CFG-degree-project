@@ -1,6 +1,5 @@
 import requests
-from settings import rapid_headers, rapid_url
-
+from ..settings import rapid_headers, rapid_url
 
 def mood_analysis(journal_entry):
     querystring = {"text": journal_entry}
