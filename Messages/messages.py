@@ -1,24 +1,24 @@
 class Messages:
     @staticmethod
     def register_msg():
-        print('Register with us!\n')
+        print('\nRegister with us!\n')
 
     @staticmethod
     def has_account_error_msg():
-        print('Enter 1 for Yes or 2 for no. Please try again')
+        print('\nEnter 1 for Yes, 2 for No, or 3 to Quit. Please try again\n')
 
     @staticmethod
     def try_email_again_msg():
-        print('That does not seem to be an email. Please enter your email in this format:\n'
-              'email@email.com')
+        print('\nThat does not seem to be an email. Please enter your email in this format:\n'
+              'email@email.com\n')
 
     @staticmethod
     def set_uname_pword_msg():
-        print('Set a username and password and write your email address.\n')
+        print('\nSet a username and password and write your email address.\n')
 
     @staticmethod
     def quit_msg():
-        print('Thank you for using our app')
+        print('\nThank you for using our app\n')
 
     @staticmethod
     def duplicate_username_msg():
@@ -26,8 +26,12 @@ class Messages:
 
     @staticmethod
     def new_account_success_msg():
-        print('New account successfully created')
+        print('\nNew account successfully created\n')
 
     @staticmethod
     def entry_already_made_msg():
         print("\nSeems like you've already generated a playlist today!\n")
+
+    @staticmethod
+    def end_menu_choices_error_msg():
+        print("Enter 1 to look at history or 2 to logout")

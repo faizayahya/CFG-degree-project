@@ -2,7 +2,13 @@ import db_files.db_utils as db
 from Menus.menus import Menus
 from Messages.messages import Messages
 import re
+import sys
 
+#               8 functions:
+#       has_account           register
+#       email_is_valid        wants_to_login
+#       login                 entry_made,
+#       end_menu_choices      logout
 
 class User:
     def __init__(self):
@@ -19,20 +25,17 @@ class User:
     def has_account():
         Menus.has_account_menu()
         try:
-            do_you_have_account = input('')
-            if do_you_have_account == "1" or do_you_have_account == 'yes' or do_you_have_account == 'Yes':
+            account = input('').lower().strip()
+            if account == "1" or account == 'yes' or account == 'y':
                 return True
-            elif do_you_have_account == "2" or do_you_have_account == 'no' or do_you_have_account == 'No':
+            elif account == "2" or account == 'no' or account == 'n':
                 return False
-            if do_you_have_account == "3" or do_you_have_account == "q" or do_you_have_account == "Quit":
+            elif account == "3" or account == "q" or account == "quit":
                 Messages.quit_msg()
-                exit()
+                return sys.exit()
         except ValueError:
             Messages.has_account_error_msg()
-            User.has_account()
-        else:
-            Messages.has_account_error_msg()
-            User.has_account()
+            return User.has_account()
 
     def register(self):
         Messages.set_uname_pword_msg()
@@ -71,14 +74,15 @@ class User:
     def wants_to_login(self):
         Menus.wants_to_login_menu()
         user_answer = input('')
-        if user_answer == '1':
-            return True
-        elif user_answer == '2':
-            self.register()
-        elif user_answer == '3':
-            Messages.quit_msg()
-            return False
-        else:
+        try:
+            if user_answer == '1':
+                return True
+            elif user_answer == '2':
+                return self.register()
+            elif user_answer == '3':
+                Messages.quit_msg()
+                return False
+        except ValueError:
             print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
             return self.wants_to_login()
 
@@ -98,12 +102,17 @@ class User:
     def end_menu_choices():
         Menus.end_menu()
         user_answer = input('')
-        if user_answer == '1':
-            # return True
-            # go to look at playlist and mood history
-            pass  # for now
-        elif user_answer == '2':
-            return False
+        try:
+            if user_answer == '1':
+                # return True
+                # go to look at playlist and mood history
+                # pass  # for now
+                return False
+            elif user_answer == '2':
+                return False
+        except ValueError:
+            Messages.end_menu_choices_error_msg()
+            return User.end_menu_choices()
 
     def logout(self):
         if not User.end_menu_choices():
