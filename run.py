@@ -1,4 +1,4 @@
-from functions.sentiment_analysis import mood_analysis
+from functions.sentiment_analysis import *
 from functions.spotify_connect import *
 from functions.track_features import *
 from functions.create_playlist import create_playlist, select_mood_tracks
