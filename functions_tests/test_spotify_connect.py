@@ -1,7 +1,7 @@
 # Makayla
 
 from unittest import TestCase, main
-from ..functions.spotify_connect import *
+from spotify_connect import *
 
 class TestSpotifyAuthenticationFunction(TestCase):
     pass

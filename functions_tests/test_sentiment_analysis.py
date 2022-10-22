@@ -2,7 +2,7 @@
 
 from unittest import TestCase, main
 from unittest.mock import patch
-from ..functions.sentiment_analysis import *
+from sentiment_analysis import *
 
 
 class TestMoodAnalysisFunction(TestCase):
@@ -38,7 +38,7 @@ class TestAPICallFunction(TestCase):
         my_input = 'good'
         self.assertEqual(mood_analysis_api(my_input).status_code, 200)
 
-    @patch('..sentiment_analysis.mood_analysis_api')
+    @patch('sentiment_analysis.mood_analysis_api')
     def test_exception(self, mock_get):
         mock_get.return_value.status_code != 200
         self.assertRaises(requests.exceptions.RequestException)

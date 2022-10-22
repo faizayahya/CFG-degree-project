@@ -1,12 +1,6 @@
 import requests
-# from settings import rapid_headers, rapid_url
+from settings import rapid_url, rapid_headers
 
-rapid_headers = {
-    "X-RapidAPI-Key": "0f7fcf82f7mshab0cc347d0f8bfbp1062cdjsn2303b677e6cf",
-    "X-RapidAPI-Host": "twinword-sentiment-analysis.p.rapidapi.com"
-}
-
-rapid_url = "https://twinword-sentiment-analysis.p.rapidapi.com/analyze/"
 
 def mood_analysis_api(querystring):
     try:
@@ -15,6 +9,7 @@ def mood_analysis_api(querystring):
         print(err)
         raise
     return response
+
 
 def mood_analysis(journal_entry):
     querystring = {"text": journal_entry}
@@ -25,4 +20,3 @@ def mood_analysis(journal_entry):
         raise Exception("Sorry, didn't quite get that, let's try again")
     else:
         return mood_score
-

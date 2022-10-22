@@ -1,4 +1,4 @@
-settings.py
+functions/settings.py
 .cache
 env
 __pycache__

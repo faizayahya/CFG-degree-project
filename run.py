@@ -1,8 +1,8 @@
-from functions.sentiment_analysis import *
-from functions.spotify_connect import *
-from functions.track_features import *
-from functions.create_playlist import create_playlist, select_mood_tracks
-from functions.login_user import User
+from functions_tests.sentiment_analysis import *
+from functions_tests.spotify_connect import *
+from functions_tests.track_features import *
+from functions_tests.create_playlist import create_playlist, select_mood_tracks
+from functions_tests.login_user import User
 from messages.messages import Messages
 from db_files.db_utils import InPlaylistsTable
 from datetime import date
