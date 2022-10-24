@@ -37,9 +37,30 @@ class User:
             Messages.has_account_error_msg()
             return User.has_account()
 
+    def username_validity(self):
+        possible_username = input('Set a username:')
+        if len(possible_username) < 3:
+            Messages.invalid_username_msg()
+            self.username_validity()
+        elif not possible_username.isalnum():
+            Messages.invalid_username_msg()
+            self.username_validity()
+        else:
+            self.username = possible_username
+            return self.username
+
+    def password_validity(self):
+        possible_password = input('Set a password:')
+        if len(possible_password) < 4:
+            Messages.invalid_username_msg()
+            self.password_validity()
+        else:
+            self.password = possible_password
+            return self.password
+
     def register(self):
         Messages.set_uname_pword_msg()
-        self.username = input('Set a username:')
+        self.username_validity()
 
         account_exists = db.InAccountsTable.username_in_db_check(self.username)
         if account_exists:
@@ -50,9 +71,8 @@ class User:
                 exit()
 
         else:
-            self.password = input('Set a password:')
+            self.password_validity()
             email_entry = input('Please write your email address:')
-
             if User.email_is_valid(email_entry):
                 self.logged_in = True
                 self.email = email_entry
@@ -89,8 +109,11 @@ class User:
     def login(self):
         self.username = input('Please enter your username:')
         self.password = input('Please enter your password:')
-        if db.InAccountsTable.authenticate_login_in_db(self.username, self.password):
+        account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
+        if account_authenticated:
             self.logged_in = True
+        else:
+            self.login()
 
     def entry_made(self):
         if db.InPlaylistsTable.entry_made_check_db(self.username, self.date):
