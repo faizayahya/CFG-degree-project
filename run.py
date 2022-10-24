@@ -5,7 +5,7 @@ from create_playlist import create_playlist, select_mood_tracks
 from datetime import date
 from login_user import User
 from Messages.messages import Messages
-from db_files.db_utils import InPlaylistsTable
+from db_files.db_utils import InPlaylistsTable, InTracksTable
 
 
 def main():
@@ -42,6 +42,9 @@ def main():
         playlist_ids = get_playlist_ids(sp)
         list_tracks = get_playlist_tracks(playlist_ids, sp)
         track_features = get_track_features(list_tracks, sp)
+
+        # insert track data, into track table
+        InTracksTable.insert_song_data_to_db(track_features)
 
         # get the track lists based on an algo and creates a spotify playlist
         track_list = select_mood_tracks(mood, track_features)

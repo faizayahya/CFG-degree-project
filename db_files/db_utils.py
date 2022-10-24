@@ -177,15 +177,18 @@ class InPlaylistsTable:
 
 class InTracksTable:
     @staticmethod
-    def insert_song_data_to_db(song_name, song_uri, danceability, energy, valence):
+    def insert_song_data_to_db(track_object_list):
         try:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
+            for track in track_object_list:
+                if track.name.count("\"") < 1:  # checking track name contains no double quotes
+                    query = f"""INSERT IGNORE INTO tracks (song_name, song_uri, energy, valence, danceability)
+                    VALUES ("{track.name}", '{track.uri}', {track.energy}, {track.valence}, {track.danceability});"""
+                    my_cursor.execute(query)
+                else:
+                    continue
 
-            query = f"""INSERT INTO tracks (song_name, song_uri, danceability, energy, valence) 
-            VALUES {song_name}, {song_uri}, {danceability}, {energy}, {valence}"""
-
-            my_cursor.execute(query)
             db_conx.commit()
 
         except Exception:
@@ -194,3 +197,5 @@ class InTracksTable:
         finally:
             if db_conx:
                 db_conx.close()
+
+

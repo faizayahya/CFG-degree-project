@@ -31,7 +31,6 @@ date DATE NOT NULL
 create_tracks_table_query = """
 CREATE TABLE IF NOT EXISTS tracks (
 song_name VARCHAR(100) NOT NULL,
-song_id VARCHAR(100) NOT NULL,
 song_uri VARCHAR(100) NOT NULL,
 energy FLOAT NOT NULL,
 valence FLOAT NOT NULL,
@@ -56,7 +55,6 @@ VALUES
 ('zorro', 'zor123', 'zor@email.com')
 """
 
-# zorro is my cat
 
 cnx = mysql.connector.connect(
             host=HOST,
