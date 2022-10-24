@@ -1,12 +1,11 @@
-from functions.sentiment_analysis import mood_analysis
-from functions.spotify_connect import *
-from functions.track_features import *
-from functions.create_playlist import create_playlist, select_mood_tracks
-from functions.login_user import User
+from functions_tests.sentiment_analysis import *
+from functions_tests.spotify_connect import *
+from functions_tests.track_features import *
+from functions_tests.create_playlist import create_playlist, select_mood_tracks
+from functions_tests.login_user import User
 from messages.messages import Messages
 from db_files.db_utils import InPlaylistsTable
 from datetime import date
-
 
 def main():
     # authenticate spotify and get user and date details
@@ -42,7 +41,7 @@ def main():
         playlist_ids = get_playlist_ids(sp)
         tracks = get_playlist_tracks(playlist_ids, sp)
         list_tracks = get_track_list(tracks)
-        track_features = get_track_features(list_tracks, sp)
+        track_features = get_all_track_features(list_tracks, sp)
 
         # get the track lists based on an algo and creates a spotify playlist
         track_list = select_mood_tracks(mood, track_features)
