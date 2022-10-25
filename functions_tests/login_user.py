@@ -45,6 +45,8 @@ class User:
             elif account == "3" or account == "q" or account == "quit":
                 Messages.quit_msg()
                 return sys.exit()
+            else:
+                raise ValueError
         except ValueError:
             Messages.has_account_error_msg()
             return User.has_account()
@@ -107,9 +109,13 @@ class User:
                 self.login()
             else:
                 exit()
+        else:
+            return self.username
 
     def register(self):
-        db.InAccountsTable.insert_new_user_to_db(self.set_username(), self.set_password(), self.set_email())
+        self.set_username()
+        self.account_exists_check()
+        db.InAccountsTable.insert_new_user_to_db(self.username, self.set_password(), self.set_email())
         Messages.new_account_success_msg()
         self.logged_in = True
         return self.logged_in
