@@ -2,6 +2,7 @@ import mysql.connector
 from db_files.db_config import USER, PASSWORD, HOST
 
 
+
 class DbConnectionError(Exception):
     pass
 
@@ -133,6 +134,7 @@ class InPlaylistsTable:
 
 
 
+
     @staticmethod
     def fetch_playlist_mood_data(username):  # get copy of user's whole playlist history/mood history
         try:
@@ -164,7 +166,7 @@ class InPlaylistsTable:
             my_cursor.execute(query)
             result = my_cursor.fetchall()
 
-            if result == []:  # if there is no result that means no entry made by user
+            if not result:  # if there is no result that means no entry made by user
                 return False
             else:
                 return True
@@ -198,4 +200,27 @@ class InTracksTable:
             if db_conx:
                 db_conx.close()
 
+    @staticmethod
+    def get_mood_tracks(mood_score):
+        try:
+            db_conx = Database.connect_to_db()
+            my_cursor = db_conx.cursor()
+            if mood_score > 0.05:
+                query = """SELECT song_uri FROM tracks WHERE danceability > 0.5 AND valence > 0.5"""
+            elif mood_score < -0.05:
+                query = """SELECT song_uri FROM tracks WHERE danceability < 0.5 AND valence < 0.5"""
+            else:
+                if -0.05 < mood_score < 0.05:
+                    query = """SELECT song_uri FROM tracks WHERE danceability BETWEEN 0.3 AND 0.6 AND valence BETWEEN 0.3 AND 0.6"""
 
+            my_cursor.execute(query)
+            result = my_cursor.fetchall()
+            track_uris = [''.join(uri) for uri in result]
+            return track_uris
+
+        except Exception:
+            raise DbConnectionError("Failed to read data from DB")
+
+        finally:
+            if db_conx:
+                db_conx.close()

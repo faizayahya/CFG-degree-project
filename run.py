@@ -1,10 +1,10 @@
 from sentiment_analysis import mood_analysis
 from spotify_connect import *
 from track_features import *
-from create_playlist import create_playlist, select_mood_tracks
+from create_playlist import *
 from datetime import date
 from login_user import User
-from Messages.messages import Messages
+from messages.messages import Messages
 from db_files.db_utils import InPlaylistsTable, InTracksTable
 
 
@@ -47,7 +47,8 @@ def main():
         InTracksTable.insert_song_data_to_db(track_features)
 
         # get the track lists based on an algo and creates a spotify playlist
-        track_list = select_mood_tracks(mood, track_features)
+        track_list_api = select_mood_tracks(mood, track_features)
+        track_list = get_full_tracklist(track_list_api, mood)
         new_playlist_id = create_playlist(sp, user, name, track_list[:20])
 
         # set user playlist attribute
@@ -75,5 +76,5 @@ if __name__ == "__main__":
     # print(f"logged in?: {current_user.logged_in}")
     # print(f"username: {current_user.username}")
     # # print(f"email: {current_user.email}")
-    # # print(f"pword: {current_user.password}")
+    # # print(f"pword: {current_user.password}")1
     # print(f"date: {current_user.date}")
