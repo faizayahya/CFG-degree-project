@@ -1,14 +1,26 @@
 import db_files.db_utils as db
-from menus.menus import Menus
-from messages.messages import Messages
+from Menus.menus import Menus
+from Messages.messages import Messages
 import re
 import sys
 
-#               8 functions:
-#       has_account           register
-#       email_is_valid        wants_to_login
-#       login                 entry_made,
-#       end_menu_choices      logout
+
+#               14 functions:
+
+#               has_account
+#               set_username
+#               username_valid
+#               set_password
+#               password_valid
+#               set_email
+#               email_is_valid
+#               account_exists_check
+#               register
+#               wants_to_login
+#               login
+#               entry_made
+#               end_menu_choices
+#               logout
 
 class User:
     def __init__(self):
@@ -37,51 +49,47 @@ class User:
             Messages.has_account_error_msg()
             return User.has_account()
 
-    def username_validity(self):
+    def set_username(self):
         possible_username = input('Set a username:')
-        if len(possible_username) < 3:
-            Messages.invalid_username_msg()
-            self.username_validity()
-        elif not possible_username.isalnum():
-            Messages.invalid_username_msg()
-            self.username_validity()
+        if not User.username_valid(possible_username):
+            return self.set_username()
         else:
             self.username = possible_username
             return self.username
 
-    def password_validity(self):
-        possible_password = input('Set a password:')
-        if len(possible_password) < 4:
+    @staticmethod
+    def username_valid(possible_username):
+        if len(possible_username) < 3 or len(possible_username) > 10 or not possible_username.isalnum():
             Messages.invalid_username_msg()
-            self.password_validity()
+            return False
+        else:
+            return True
+
+    def set_password(self):
+        possible_password = input('Set a password:')
+        if not User.password_valid(possible_password):
+            Messages.invalid_password_msg()
+            return self.set_password()
         else:
             self.password = possible_password
             return self.password
 
-    def register(self):
-        Messages.set_uname_pword_msg()
-        self.username_validity()
-
-        account_exists = db.InAccountsTable.username_in_db_check(self.username)
-        if account_exists:
-            Messages.duplicate_username_msg()
-            if self.wants_to_login():
-                self.login()
-            else:
-                exit()
-
+    @staticmethod
+    def password_valid(possible_password):
+        if len(possible_password) < 4:
+            Messages.invalid_password_msg()
+            return False
         else:
-            self.password_validity()
-            email_entry = input('Please write your email address:')
-            if User.email_is_valid(email_entry):
-                self.logged_in = True
-                self.email = email_entry
-                db.InAccountsTable.insert_new_user_to_db(self.username, self.password, self.email)
-                Messages.new_account_success_msg()
+            return True
 
-            else:
-                Messages.try_email_again_msg()
-                return self.register()
+    def set_email(self):
+        possible_email = input('Please write your email address:')
+        if not User.email_is_valid(possible_email):
+            Messages.try_email_again_msg()
+            return self.set_email()
+        else:
+            self.email = possible_email
+            return self.email
 
     @staticmethod
     def email_is_valid(email_entry):
@@ -90,6 +98,21 @@ class User:
             return False
         else:
             return True
+
+    def account_exists_check(self):
+        account_exists = db.InAccountsTable.username_in_db_check(self.username)
+        if account_exists:
+            Messages.duplicate_username_msg()
+            if self.wants_to_login():
+                self.login()
+            else:
+                exit()
+
+    def register(self):
+        db.InAccountsTable.insert_new_user_to_db(self.set_username(), self.set_password(), self.set_email())
+        Messages.new_account_success_msg()
+        self.logged_in = True
+        return self.logged_in
 
     def wants_to_login(self):
         Menus.wants_to_login_menu()
