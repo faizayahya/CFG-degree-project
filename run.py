@@ -3,9 +3,10 @@ from functions_tests.spotify_connect import *
 from functions_tests.track_features import *
 from functions_tests.create_playlist import create_playlist, select_mood_tracks
 from functions_tests.login_user import User
-from messages.messages import Messages
+from Messages.messages import Messages
 from db_files.db_utils import InPlaylistsTable
 from datetime import date
+
 
 def main():
     # authenticate spotify and get user and date details
