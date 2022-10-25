@@ -7,6 +7,7 @@ from Messages.messages import Messages
 from db_files.db_utils import InPlaylistsTable
 from datetime import date
 
+
 def main():
     # authenticate spotify and get user and date details
     sp = authenticate_spotify()
