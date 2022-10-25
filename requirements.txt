@@ -1,2 +1,4 @@
 spotipy
 requests
+mysql-connector-python
+mysql.connector

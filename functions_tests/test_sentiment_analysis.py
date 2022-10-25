@@ -1,7 +1,11 @@
-import unittest
-from sentiment_analysis import mood_analysis
+# Aaliya
 
-class TestMoodAnalysisFunction(unittest.TestCase):
+from unittest import TestCase, main
+from unittest.mock import patch
+from sentiment_analysis import *
+
+
+class TestMoodAnalysisFunction(TestCase):
     def test_positive_sentiment(self):
         my_input = "very good"
         result = mood_analysis(my_input)
@@ -26,3 +30,19 @@ class TestMoodAnalysisFunction(unittest.TestCase):
         my_input = "verry goood"
         with self.assertRaises(Exception):
             mood_analysis(my_input)
+
+
+class TestAPICallFunction(TestCase):
+
+    def test_valid_url(self):
+        my_input = 'good'
+        self.assertEqual(mood_analysis_api(my_input).status_code, 200)
+
+    @patch('sentiment_analysis.mood_analysis_api')
+    def test_exception(self, mock_get):
+        mock_get.return_value.status_code != 200
+        self.assertRaises(requests.exceptions.RequestException)
+
+
+if __name__ == "__main__":
+    main()

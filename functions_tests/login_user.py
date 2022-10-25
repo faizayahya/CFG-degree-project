@@ -1,6 +1,6 @@
 import db_files.db_utils as db
-from Menus.menus import Menus
-from Messages.messages import Messages
+from menus.menus import Menus
+from messages.messages import Messages
 import re
 import sys
 

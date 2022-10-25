@@ -1,6 +1,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from settings import *
+import os
 
 
 # TO DO: put as method in a User Class
