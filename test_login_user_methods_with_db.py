@@ -6,22 +6,6 @@ from db_files.db_utils import *
 
 # todo  login invalid test case
 
-class TestValidEmail(TestCase):
-
-    def test_valid_email_returns_true(self):
-        self.assertTrue(User.email_is_valid("my_valid_email@email.com"))
-        self.assertTrue(User.email_is_valid("myother.validemail@email.com"))
-
-    def test_invalid_email_returns_false(self):
-        self.assertFalse(User.email_is_valid("my_invalid_email_@emailcom"))
-
-    def test_no_at_sign_email_returns_false(self):
-        self.assertFalse(User.email_is_valid("my_invalid_emailemail.com"))
-
-    def test_empty_email_returns_false(self):
-        self.assertFalse(User.email_is_valid(""))
-
-
 class TestLoginFunction(TestCase):
     @mock.patch("db_files.db_utils.InAccountsTable.authenticate_login_in_db")
     def test_password_matches_username(self, mock_authenticate):
@@ -36,18 +20,18 @@ class TestLoginFunction(TestCase):
         # assert
         self.assertEqual(expected, result)
 
-    @mock.patch("db_files.db_utils.InAccountsTable.authenticate_login_in_db")
-    def test_incorrect_password(self, mock_authenticate):
-        # setup
-        builtins.input = mock.Mock()
-        builtins.input.side_effect = ['humi', '1234']
-        a_user = User()
-        mock_authenticate.return_value = False
-        expected = None
-        # act
-        result = User.login(a_user)
-        # assert
-        self.assertEqual(expected, result)
+    # @mock.patch("db_files.db_utils.InAccountsTable.authenticate_login_in_db")
+    # def test_incorrect_password(self, mock_authenticate):
+    #     # setup
+    #     builtins.input = mock.Mock()
+    #     builtins.input.side_effect = ['humi', '1234']
+    #     a_user = User()
+    #     mock_authenticate.return_value = False
+    #     expected = None
+    #     # act
+    #     result = User.login(a_user)
+    #     # assert
+    #     self.assertEqual(expected, result)
 
 
 class TestEntryMadeFunction(TestCase):

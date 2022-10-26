@@ -76,7 +76,7 @@ class User:
 
     @staticmethod
     def password_valid(possible_password):
-        if len(possible_password) < 4:
+        if len(possible_password) < 4 or len(possible_password) > 15:
             return False
         else:
             return True
