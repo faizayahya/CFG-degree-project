@@ -26,6 +26,14 @@ class Messages:
         print('Set a username and password and write your email address.\n')
 
     @staticmethod
+    def too_many_attempts():
+        print('\nYou have reached the number of attempts to input your password\n')
+
+    @staticmethod
+    def incorrect_password():
+        print("\nIncorrect password, please try logging in again\n")
+
+    @staticmethod
     def quit_msg():
         print('\nThank you for using our app\n')
 
@@ -43,4 +51,8 @@ class Messages:
 
     @staticmethod
     def end_menu_choices_error_msg():
-        print("Enter 1 to look at history or 2 to logout")
+        print("\nEnter 1 to look at history or 2 to logout\n")
+
+    @staticmethod
+    def something_went_wrong():
+        print('\nSomething went wrong, please try again\n')

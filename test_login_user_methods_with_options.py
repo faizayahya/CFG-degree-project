@@ -1,7 +1,7 @@
 import builtins
 from unittest import TestCase
 from unittest.mock import Mock
-from login_user import User
+from functions_tests.login_user import User
 # in this file, we are testing the following functions: has_account, wants_to_login, end_menu_choices
 # These functions all rely on user inputs
 # we are testing that those inputs return the expected results
