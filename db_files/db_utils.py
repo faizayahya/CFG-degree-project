@@ -82,11 +82,16 @@ class InAccountsTable:
             raise DbConnectionError("Failed to read data from DB")
         else:
             result = my_cursor.fetchall()
-            if result[0][0] == username and result[0][1] == password:
-                print('Successful Login')
-                return True
-            else:
-                raise PasswordError
+            try:
+                if result[0][0] == username and result[0][1] == password:
+                    print('Successful Login')
+                    return True
+                else:
+                    raise PasswordError
+            except PasswordError:
+                print("Incorrect password, please logging in again")
+                return False
+
         finally:
             if db_conx:
                 db_conx.close()
