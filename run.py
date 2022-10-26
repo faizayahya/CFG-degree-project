@@ -22,7 +22,7 @@ def main():
     # check if user has account, if so login, if not then set up new account
     if current_user.has_account():
         current_user.login()
-    else:
+    elif not current_user.has_account():
         Messages.register_msg()
         current_user.set_username()
         if InAccountsTable.username_in_db_check(current_user.username):
@@ -30,13 +30,17 @@ def main():
             if current_user.wants_to_login():
                 current_user.login()
             else:
+                Messages.quit_msg()
                 exit()
         else:
             current_user.set_password()
             current_user.set_email()
-            InAccountsTable.insert_new_user_to_db(current_user.username, current_user.password, current_user.email)
+            InAccountsTable.insert_new_user_to_db(current_user.username,
+                                                  current_user.password,
+                                                  current_user.email)
             Messages.new_account_success_msg()
             current_user.logged_in = True
+
 
     # check if entry has already been made today by current user
     if not current_user.entry_made():
@@ -64,8 +68,10 @@ def main():
         current_user.playlist = "https://open.spotify.com/playlist/{}".format(new_playlist_id)
 
         # insert playlist data, mood, user in playlist table
-        InPlaylistsTable.insert_playlist_to_db(current_user.username, current_user.playlist,
-                                               current_user.mood_score, current_user.date)
+        InPlaylistsTable.insert_playlist_to_db(current_user.username,
+                                               current_user.playlist,
+                                               current_user.mood_score,
+                                               current_user.date)
 
         # link to the new playlist
         print('\nPlay your new playlist at https://open.spotify.com/playlist/{}\n\n'.format(new_playlist_id))

@@ -56,3 +56,7 @@ class Messages:
     @staticmethod
     def something_went_wrong():
         print('\nSomething went wrong, please try again\n')
+
+    @staticmethod
+    def username_not_recognised():
+        print("\nWe don't recognise that username. Please try again\n")

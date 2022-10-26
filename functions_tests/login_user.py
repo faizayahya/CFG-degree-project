@@ -42,7 +42,7 @@ class User:
                 return False
             elif account == "3" or account == "q" or account == "quit":
                 Messages.quit_msg()
-                return sys.exit()
+                raise sys.exit()
             else:
                 raise ValueError
         except ValueError:
@@ -114,28 +114,19 @@ class User:
             self.wants_to_login()
 
     def login(self):
-        attempt = 1
-        while attempt < 4:
-            attempts_remaining = 3 - attempt
-            attempts_msg = f'Attempts remaining: {attempts_remaining}'
-            try:
-                self.username = input('Please enter your username:')
-                self.password = input('Please enter your password:')
-                account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
-                if account_authenticated:
-                    self.logged_in = True
-                    return self.logged_in
-                elif attempt == 3:
-                    Messages.too_many_attempts()
-                    sys.exit()
-                else:
-                    Messages.incorrect_password()
-                    attempt += 1
-                    print(attempts_msg)
-
-            except IndexError:
-                Messages.something_went_wrong()
+        try:
+            self.username = input('Please enter your username:')
+            self.password = input('Please enter your password:')
+            account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
+            if account_authenticated:
+                self.logged_in = True
+                return self.logged_in
+            else:
+                Messages.incorrect_password()
                 self.login()
+        except IndexError:
+            Messages.username_not_recognised()
+            self.login()
 
     def entry_made(self):
         if db.InPlaylistsTable.entry_made_check_db(self.username, self.date):
@@ -155,6 +146,8 @@ class User:
                 return False
             elif user_answer == '2':
                 return False
+            else:
+                raise ValueError
         except ValueError:
             Messages.end_menu_choices_error_msg()
             User.end_menu_choices()

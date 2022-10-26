@@ -1,17 +1,15 @@
 import builtins
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from functions_tests.login_user import User
+
+
 # in this file, we are testing the following functions: has_account, wants_to_login, end_menu_choices
 # These functions all rely on user inputs
 # we are testing that those inputs return the expected results
 
-# TODO tests for has_account for the input 3/q/quit --> difficult because it returns sys.exit
-
 # TODO tests for has_account edge cases / invalid entries --> raises ValueError then returns User.has_account
 #   "i have an account", "my answer is yes", "qu" "one" "two" "three" "12" "one" "two" "3."
-
-# TODO test for wants_to_login where input == 2 --> returns User.register
 
 # TODO test for wants_to_login  edge cases / invalid entries --> raises ValueError then returns uUser.wants_to_login
 #   (when something other than 1 or 2 or 3, "one" "two")
@@ -21,145 +19,101 @@ from functions_tests.login_user import User
 
 
 class TestHasAccountFunction(TestCase):
-    def test_has_account_returns_true_input_1(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['1']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, True)
+    def test_input_1_true(self):
+        with patch("builtins.input", side_effect=["1"]):
+            self.assertTrue(User.has_account())
 
-    def test_has_account_returns_true_input_yes(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['YEs']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, True)
+    def test_input_yes_true(self):
+        with patch("builtins.input", side_effect=["YEs"]):
+            self.assertTrue(User.has_account())
 
-    def test_has_account_returns_true_input_yes_capital_y(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['y']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, True)
+    def test_input_yes_capital_y_true(self):
+        with patch("builtins.input", side_effect=["y"]):
+            self.assertTrue(User.has_account())
 
-    def test_has_account_returns_false_input_2(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['2']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, False)
+    def test_input_2_false(self):
+        with patch("builtins.input", side_effect=["2"]):
+            self.assertFalse(User.has_account())
 
-    def test_has_account_returns_false_input_no(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['no']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, False)
+    def test_input_no_false(self):
+        with patch("builtins.input", side_effect=["no"]):
+            self.assertFalse(User.has_account())
 
-    def test_has_account_returns_false_input_no_capital_n(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['No']
-        builtins.print = Mock()
-        # act
-        result = User.has_account()
-        # assert
-        self.assertIs(result, False)
+    def test_input_no_capital_n_false(self):
+        with patch("builtins.input", side_effect=["No"]):
+            self.assertFalse(User.has_account())
 
-    def test_has_account_exits_input_3(self):
-        pass
+    def test_input_3_exits(self):
+        with self.assertRaises(SystemExit):
+            builtins.input = Mock()
+            builtins.input.side_effect = ["3"]
+            User.has_account()
 
-    def test_has_account_exits_input_quit(self):
-        pass
+    def test__input_quit_exits(self):
+        with self.assertRaises(SystemExit):
+            builtins.input = Mock()
+            builtins.input.side_effect = ["quit"]
+            User.has_account()
 
-    def test_has_account_exits_input_q(self):
-        pass
+    def test_input_q_exits(self):
+        with self.assertRaises(SystemExit):
+            builtins.input = Mock()
+            builtins.input.side_effect = ["q"]
+            User.has_account()
 
-    def test_has_account_invalid_input(self): # Value Error then returns User.has_account()
-        pass
-    # do several or all of the following for invalid inputs:
-        # edge cases = "" "qu" "one" "two" "three" "12" "one" "two" "3."
-        # completely invalid inputs = "i have an account", "my answer is yes"
+    # def test_invalid_input(self):
+    #     with self.assertRaises(ValueError):
+    #         builtins.input = Mock()
+    #         builtins.input.side_effect = [""]
+    #         User.has_account()
 
 
 class TestWantsToLoginFunction(TestCase):
-    def test_wants_to_login_returns_true_input_1(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['1']
-        builtins.print = Mock()
+    def test_input_1_true(self):  # Valid Input
         a_user = User()
-        # act
-        result = User.wants_to_login(a_user)
-        # assert
-        self.assertIs(result, True)
+        with patch("builtins.input", side_effect=["1"]):
+            self.assertTrue(User.wants_to_login(a_user))
 
-    def test_wants_to_login_returns_register_method_input_2(self): # Valid Input returns User.register()
-        pass
-# TODO test for wants_to_login where input == 2 --> returns User.register
-
-    def test_wants_to_login_returns_false_input_3(self):  # Valid Input
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['3']
-        builtins.print = Mock()
+    def test_input_2_false(self):  # Valid Input
         a_user = User()
-        # act
-        result = User.wants_to_login(a_user)
-        # assert
-        self.assertIs(result, False)
+        with patch("builtins.input", side_effect=["2"]):
+            self.assertTrue(User.wants_to_login(a_user))
 
-# TODO test for wants_to_login edge cases / invalid entries --> raises ValueError then returns User.wants_to_login
-#   (when something other than 1 or 2 or 3, "one" "two" ""
+    # def test_invalid_entry_returns_itself(self):  # Invalid Input
+    #     a_user = User()
+    #
+    #     builtins.input = Mock()
+    #     builtins.input.side_effect = ["one"]
+    #
+    #     User.wants_to_login(a_user)
+    #
+    #     self.assertRaises(ValueError)
 
-    def test_wants_to_login_returns_itself_for_invalid_entry(self): # Value Error then returns User.wants_to_login()
-        pass
-
-    def test_wants_to_login_returns_itself_for_empty_string(self): # Value Error then returns User.wants_to_login()
-        pass
+    #def test_wants_to_login_returns_itself_for_empty_string(self):  # Invalid Input
+        # a_user = User()
+        #
+        # builtins.input = Mock()
+        # builtins.input.side_effect = [""]
+        #
+        # User.wants_to_login(a_user)
+        #
+        # self.assertRaises(ValueError)
 
 
 class TestEndMenuChoices(TestCase):
 
-    # def test_end_menu_choices_returns_true_input_1(self):  # Valid Input
-    #     # setup
-    #     builtins.input = Mock()
-    #     builtins.input.side_effect = ['1']
-    #     builtins.print = Mock()
-    #     # act
-    #     result = User.end_menu_choices()
-    #     # assert
-    #     self.assertIs(result, True)
+    # def test_input_1_true(self):  # Valid Input
+    #     with patch("builtins.input", side_effect=["1"]):
+    #         self.assertFalse(User.end_menu_choices())
 
-    def test_end_menu_choices_returns_false_input_2(self):
-        # setup
-        builtins.input = Mock()
-        builtins.input.side_effect = ['2']
-        builtins.print = Mock()
-        # act
-        result = User.end_menu_choices()
-        # assert
-        self.assertIs(result, False)
+    def test_input_2_false(self):
+        with patch("builtins.input", side_effect=["2"]):
+            self.assertFalse(User.end_menu_choices())
 
-    def test_end_menu_choices_returns_itself_for_invalid_input(self): # Value Error then returns User.end_menu_choices()
+    def test_end_menu_choices_returns_itself_for_invalid_input(self):  # Value Error then returns User.end_menu_choices()
         pass
 
-    def test_end_menu_choices_returns_itself_for_empty_string(self): # Value Error then returns User.end_menu_choices()
+    def test_end_menu_choices_returns_itself_for_empty_string(self):  # Value Error then returns User.end_menu_choices()
         pass
 
 # TODO tests for end_menu_choices edge cases / invalid entries --> ValueError, returns a function User.end_menu_choices

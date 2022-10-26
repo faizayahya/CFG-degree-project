@@ -3,7 +3,8 @@ from unittest import TestCase, mock
 from functions_tests.login_user import *
 from db_files.db_utils import *
 
-# todo  login
+
+# todo  login invalid test case
 
 class TestValidEmail(TestCase):
 
@@ -35,18 +36,18 @@ class TestLoginFunction(TestCase):
         # assert
         self.assertEqual(expected, result)
 
-    # @mock.patch("db_files.db_utils.InAccountsTable.authenticate_login_in_db")
-    # def test_incorrect_password(self, mock_authenticate):
-    #     # setup
-    #     builtins.input = mock.Mock()
-    #     builtins.input.side_effect = ['humi', '1234']
-    #     a_user = User()
-    #     mock_authenticate.return_value = False
-    #     expected = "Incorrect password, please try logging in again\nAttempts remaining: 2"
-    #     # act
-    #     result = User.login(a_user)
-    #     # assert
-    #     self.assertEqual(expected, result)
+    @mock.patch("db_files.db_utils.InAccountsTable.authenticate_login_in_db")
+    def test_incorrect_password(self, mock_authenticate):
+        # setup
+        builtins.input = mock.Mock()
+        builtins.input.side_effect = ['humi', '1234']
+        a_user = User()
+        mock_authenticate.return_value = False
+        expected = None
+        # act
+        result = User.login(a_user)
+        # assert
+        self.assertEqual(expected, result)
 
 
 class TestEntryMadeFunction(TestCase):
