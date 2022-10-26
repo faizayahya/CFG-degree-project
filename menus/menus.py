@@ -11,8 +11,7 @@ class Menus:
     def wants_to_login_menu():
         print('What would you like to do?')
         print('[1] Login')
-        print('[2] Register with different username')
-        print('[3] Quit')
+        print('[2] Quit')
 
     @staticmethod
     def end_menu():

@@ -5,7 +5,7 @@ import re
 import sys
 
 
-#               14 functions:
+#               12 functions:
 
 #               has_account
 #               set_username
@@ -14,8 +14,6 @@ import sys
 #               password_valid
 #               set_email
 #               email_is_valid
-#               account_exists_check
-#               register
 #               wants_to_login
 #               login
 #               entry_made
@@ -54,6 +52,7 @@ class User:
     def set_username(self):
         possible_username = input('Set a username:')
         if not User.username_valid(possible_username):
+            Messages.invalid_username_msg()
             return self.set_username()
         else:
             self.username = possible_username
@@ -62,7 +61,6 @@ class User:
     @staticmethod
     def username_valid(possible_username):
         if len(possible_username) < 3 or len(possible_username) > 10 or not possible_username.isalnum():
-            Messages.invalid_username_msg()
             return False
         else:
             return True
@@ -79,7 +77,6 @@ class User:
     @staticmethod
     def password_valid(possible_password):
         if len(possible_password) < 4:
-            Messages.invalid_password_msg()
             return False
         else:
             return True
@@ -101,25 +98,6 @@ class User:
         else:
             return True
 
-    def account_exists_check(self):
-        account_exists = db.InAccountsTable.username_in_db_check(self.username)
-        if account_exists:
-            Messages.duplicate_username_msg()
-            if self.wants_to_login():
-                self.login()
-            else:
-                exit()
-        else:
-            return self.username
-
-    def register(self):
-        self.set_username()
-        self.account_exists_check()
-        db.InAccountsTable.insert_new_user_to_db(self.username, self.set_password(), self.set_email())
-        Messages.new_account_success_msg()
-        self.logged_in = True
-        return self.logged_in
-
     def wants_to_login(self):
         Menus.wants_to_login_menu()
         user_answer = input('')
@@ -127,10 +105,10 @@ class User:
             if user_answer == '1':
                 return True
             elif user_answer == '2':
-                return self.register()
-            elif user_answer == '3':
                 Messages.quit_msg()
                 return False
+            else:
+                raise ValueError
         except ValueError:
             print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
             return self.wants_to_login()

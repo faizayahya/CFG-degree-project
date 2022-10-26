@@ -4,7 +4,7 @@ from functions_tests.track_features import *
 from functions_tests.create_playlist import create_playlist, select_mood_tracks
 from functions_tests.login_user import User
 from Messages.messages import Messages
-from db_files.db_utils import InPlaylistsTable
+from db_files.db_utils import InPlaylistsTable, InAccountsTable
 from datetime import date
 
 
@@ -19,12 +19,24 @@ def main():
     current_user = User()
     current_user.date = str(name)
 
-    # current_user either registers or logs in or quits
-    if not current_user.has_account():
-        Messages.register_msg()
-        current_user.register()
-    else:
+    # check if user has account, if so login, if not then set up new account
+    if current_user.has_account():
         current_user.login()
+    else:
+        Messages.register_msg()
+        current_user.set_username()
+        if InAccountsTable.username_in_db_check(current_user.username):
+            Messages.duplicate_username_msg()
+            if current_user.wants_to_login():
+                current_user.login()
+            else:
+                exit()
+        else:
+            current_user.set_password()
+            current_user.set_email()
+            InAccountsTable.insert_new_user_to_db(current_user.username, current_user.password, current_user.email)
+            Messages.new_account_success_msg()
+            current_user.logged_in = True
 
     # check if entry has already been made today by current user
     if not current_user.entry_made():
