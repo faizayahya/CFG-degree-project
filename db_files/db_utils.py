@@ -89,7 +89,6 @@ class InAccountsTable:
                 else:
                     raise PasswordError
             except PasswordError:
-                print("Incorrect password, please logging in again")
                 return False
 
         finally:
