@@ -47,13 +47,13 @@ class User:
                 raise ValueError
         except ValueError:
             Messages.has_account_error_msg()
-            return User.has_account()
+            User.has_account()
 
     def set_username(self):
         possible_username = input('Set a username:')
         if not User.username_valid(possible_username):
             Messages.invalid_username_msg()
-            return self.set_username()
+            self.set_username()
         else:
             self.username = possible_username
             return self.username
@@ -69,7 +69,7 @@ class User:
         possible_password = input('Set a password:')
         if not User.password_valid(possible_password):
             Messages.invalid_password_msg()
-            return self.set_password()
+            self.set_password()
         else:
             self.password = possible_password
             return self.password
@@ -85,7 +85,7 @@ class User:
         possible_email = input('Please write your email address:')
         if not User.email_is_valid(possible_email):
             Messages.try_email_again_msg()
-            return self.set_email()
+            self.set_email()
         else:
             self.email = possible_email
             return self.email
@@ -111,16 +111,31 @@ class User:
                 raise ValueError
         except ValueError:
             print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
-            return self.wants_to_login()
+            self.wants_to_login()
 
     def login(self):
-        self.username = input('Please enter your username:')
-        self.password = input('Please enter your password:')
-        account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
-        if account_authenticated:
-            self.logged_in = True
-        else:
-            self.login()
+        attempt = 1
+        while attempt < 4:
+            attempts_remaining = 3 - attempt
+            attempts_msg = f'Attempts remaining: {attempts_remaining}'
+            try:
+                self.username = input('Please enter your username:')
+                self.password = input('Please enter your password:')
+                account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
+                if account_authenticated:
+                    self.logged_in = True
+                    return self.logged_in
+                elif attempt == 3:
+                    Messages.too_many_attempts()
+                    sys.exit()
+                else:
+                    Messages.incorrect_password()
+                    attempt += 1
+                    print(attempts_msg)
+
+            except IndexError:
+                Messages.something_went_wrong()
+                self.login()
 
     def entry_made(self):
         if db.InPlaylistsTable.entry_made_check_db(self.username, self.date):
@@ -142,7 +157,7 @@ class User:
                 return False
         except ValueError:
             Messages.end_menu_choices_error_msg()
-            return User.end_menu_choices()
+            User.end_menu_choices()
 
     def logout(self):
         if not User.end_menu_choices():
