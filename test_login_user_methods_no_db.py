@@ -189,10 +189,6 @@ class TestEndMenuChoices(TestCase):
         with patch("builtins.input", side_effect=["2"]):
             self.assertFalse(User.end_menu_choices())
 
-    def test_end_menu_choices_returns_itself_for_invalid_input(
-            self):  # Value Error then returns User.end_menu_choices()
-        pass
-
     @patch('builtins.input', return_value="3")
     def test_wrong_value_throws_value_error(self, mocked_value):
         with self.assertRaises(ValueError):
