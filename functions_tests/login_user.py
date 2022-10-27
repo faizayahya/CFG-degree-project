@@ -5,21 +5,6 @@ import re
 import sys
 
 
-#               12 functions:
-
-#               has_account
-#               set_username
-#               username_valid
-#               set_password
-#               password_valid
-#               set_email
-#               email_is_valid
-#               wants_to_login
-#               login
-#               entry_made
-#               end_menu_choices
-#               logout
-
 class User:
     def __init__(self):
         self.username = None
@@ -51,12 +36,15 @@ class User:
 
     def set_username(self):
         possible_username = input('Set a username:')
-        if not User.username_valid(possible_username):
+        try:
+            if User.username_valid(possible_username):
+                self.username = possible_username
+                return self.username
+            else:
+                raise ValueError
+        except ValueError:
             Messages.invalid_username_msg()
             self.set_username()
-        else:
-            self.username = possible_username
-            return self.username
 
     @staticmethod
     def username_valid(possible_username):
@@ -67,12 +55,15 @@ class User:
 
     def set_password(self):
         possible_password = input('Set a password:')
-        if not User.password_valid(possible_password):
-            Messages.invalid_password_msg()
+        try:
+            if User.password_valid(possible_password):
+                self.password = possible_password
+                return self.password
+            else:
+                raise ValueError
+        except ValueError:
+            Messages.invalid_username_msg()
             self.set_password()
-        else:
-            self.password = possible_password
-            return self.password
 
     @staticmethod
     def password_valid(possible_password):
@@ -83,12 +74,15 @@ class User:
 
     def set_email(self):
         possible_email = input('Please write your email address:')
-        if not User.email_is_valid(possible_email):
+        try:
+            if User.email_is_valid(possible_email):
+                self.email = possible_email
+                return self.email
+            else:
+                raise ValueError
+        except ValueError:
             Messages.try_email_again_msg()
             self.set_email()
-        else:
-            self.email = possible_email
-            return self.email
 
     @staticmethod
     def email_is_valid(email_entry):
@@ -122,8 +116,10 @@ class User:
                 self.logged_in = True
                 return self.logged_in
             else:
-                Messages.incorrect_password()
-                self.login()
+                raise ValueError
+        except ValueError:
+            Messages.incorrect_password()
+            self.login()
         except IndexError:
             Messages.username_not_recognised()
             self.login()

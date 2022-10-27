@@ -3,16 +3,6 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 from functions_tests.login_user import User
 
-# TODO tests for has_account edge cases / invalid entries --> raises ValueError then returns User.has_account
-#   "i have an account", "my answer is yes", "qu" "one" "two" "three" "12" "one" "two" "3."
-
-# TODO test for wants_to_login  edge cases / invalid entries --> raises ValueError then returns uUser.wants_to_login
-#   (when something other than 1 or 2 or 3, "one" "two")
-
-# TODO tests for end_menu_choices edge cases / invalid entries --> ValueError, returns a function User.end_menu_choices
-#   (when something other than 1 or 2 "one" "two" "logout")
-
-# TODO tests for set email/password/username --> returns itself
 
 class TestHasAccountFunction(TestCase):
     def test_input_1_true(self):
@@ -57,11 +47,10 @@ class TestHasAccountFunction(TestCase):
             builtins.input.side_effect = ["q"]
             User.has_account()
 
-    # def test_invalid_input(self):
-    #     with self.assertRaises(ValueError):
-    #         builtins.input = Mock()
-    #         builtins.input.side_effect = [""]
-    #         User.has_account()
+    @patch('builtins.input', return_value="")
+    def test_invalid_input_throws_value_error(self, mocked_input):
+        with self.assertRaises(ValueError):
+            User.has_account()
 
 
 class TestUsernameValid(TestCase):
@@ -121,8 +110,13 @@ class TestSetUsername(TestCase):
 
         self.assertEqual(expected, result)
 
-    def test_for_invalid_username(self):
-        pass
+    @patch('builtins.input', return_value="p")
+    def test_invalid_uname_throws_value_error(self, mocked_input):
+        with self.assertRaises(ValueError):
+            a_user = User()
+            a_user.set_username()
+
+
 class TestSetPassword(TestCase):
     @patch("functions_tests.login_user.User.password_valid")
     def test_setting_valid_email_updates_user_attribute(self, mock_valid_password):  # Valid Input
@@ -135,8 +129,12 @@ class TestSetPassword(TestCase):
 
         self.assertEqual(expected, result)
 
-    def test_for_invalid_pword(self):
-        pass
+    @patch('builtins.input', return_value="p")
+    def test_invalid_pword_throws_value_error(self, mocked_input):
+        with self.assertRaises(ValueError):
+            a_user = User()
+            a_user.set_password()
+
 
 class TestSetEmail(TestCase):
     @patch("functions_tests.login_user.User.email_is_valid")
@@ -150,31 +148,35 @@ class TestSetEmail(TestCase):
 
         self.assertEqual(expected, result)
 
-    def test_for_invalid_email(self):
-        pass
+    @patch('builtins.input', return_value="eeeeee@eeee")
+    def test_invalid_email_throws_value_error(self, mocked_input):
+        with self.assertRaises(ValueError):
+            a_user = User()
+            a_user.set_email()
 
 
 class TestWantsToLoginFunction(TestCase):
     def test_input_1_true(self):  # Valid Input
-        a_user = User()
         with patch("builtins.input", side_effect=["1"]):
-            self.assertTrue(User.wants_to_login(a_user))
+            a_user = User()
+            self.assertTrue(a_user.wants_to_login())
 
     def test_input_2_false(self):  # Valid Input
-        a_user = User()
         with patch("builtins.input", side_effect=["2"]):
-            self.assertTrue(User.wants_to_login(a_user))
+            a_user = User()
+            self.assertFalse(a_user.wants_to_login())
 
+    @patch('builtins.input', return_value="")
+    def test_empty_string_throws_value_error(self, mocked_value):
+        with self.assertRaises(ValueError):
+            a_user = User()
+            a_user.wants_to_login()
 
-    #def test_wants_to_login_returns_itself_for_empty_string(self):  # Invalid Input
-        # a_user = User()
-        #
-        # builtins.input = Mock()
-        # builtins.input.side_effect = [""]
-        #
-        # User.wants_to_login(a_user)
-        #
-        # self.assertRaises(ValueError)
+    @patch('builtins.input', return_value="3")
+    def test_wrong_value_throws_value_error(self, mocked_value):
+        with self.assertRaises(ValueError):
+            a_user = User()
+            a_user.wants_to_login()
 
 
 class TestEndMenuChoices(TestCase):
@@ -187,8 +189,11 @@ class TestEndMenuChoices(TestCase):
         with patch("builtins.input", side_effect=["2"]):
             self.assertFalse(User.end_menu_choices())
 
-    def test_end_menu_choices_returns_itself_for_invalid_input(self):  # Value Error then returns User.end_menu_choices()
+    def test_end_menu_choices_returns_itself_for_invalid_input(
+            self):  # Value Error then returns User.end_menu_choices()
         pass
 
-    # def test_end_menu_choices_returns_itself_for_empty_string(self):  # Value Error then returns User.end_menu_choices()
-    #     pass
+    @patch('builtins.input', return_value="3")
+    def test_wrong_value_throws_value_error(self, mocked_value):
+        with self.assertRaises(ValueError):
+            User.end_menu_choices()
