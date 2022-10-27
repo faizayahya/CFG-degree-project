@@ -1,5 +1,14 @@
 class Messages:
     @staticmethod
+    def invalid_username_msg():
+        print('\nThis is an invalid username. Please enter a username between 3 and 10 characters. '
+              'Please do not user any special characters\n')
+
+    @staticmethod
+    def invalid_password_msg():
+        print('\nThis is an invalid password. Please enter a password longer than 4 characters.\n')
+
+    @staticmethod
     def register_msg():
         print('\nRegister with us!\n')
 
@@ -14,7 +23,7 @@ class Messages:
 
     @staticmethod
     def set_uname_pword_msg():
-        print('\nSet a username and password and write your email address.\n')
+        print('Set a username and password and write your email address.\n')
 
     @staticmethod
     def quit_msg():

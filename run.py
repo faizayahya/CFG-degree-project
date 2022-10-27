@@ -1,11 +1,12 @@
-from sentiment_analysis import mood_analysis
-from spotify_connect import *
-from track_features import *
-from create_playlist import *
+from functions.track_features import get_track_list
+from functions_tests.sentiment_analysis import *
+from functions_tests.spotify_connect import *
+from functions_tests.track_features import *
+from functions_tests.create_playlist import create_playlist, select_mood_tracks, get_full_tracklist
+from functions_tests.login_user import User
+from Messages.messages import Messages
+from db_files.db_utils import InPlaylistsTable, InAccountsTable, InTracksTable
 from datetime import date
-from login_user import User
-from messages.messages import Messages
-from db_files.db_utils import InPlaylistsTable, InTracksTable
 
 
 def main():
@@ -19,12 +20,24 @@ def main():
     current_user = User()
     current_user.date = str(name)
 
-    # current_user either registers or logs in or quits
-    if not current_user.has_account():
-        Messages.register_msg()
-        current_user.register()
-    else:
+    # check if user has account, if so login, if not then set up new account
+    if current_user.has_account():
         current_user.login()
+    else:
+        Messages.register_msg()
+        current_user.set_username()
+        if InAccountsTable.username_in_db_check(current_user.username):
+            Messages.duplicate_username_msg()
+            if current_user.wants_to_login():
+                current_user.login()
+            else:
+                exit()
+        else:
+            current_user.set_password()
+            current_user.set_email()
+            InAccountsTable.insert_new_user_to_db(current_user.username, current_user.password, current_user.email)
+            Messages.new_account_success_msg()
+            current_user.logged_in = True
 
     # check if entry has already been made today by current user
     if not current_user.entry_made():
@@ -40,8 +53,9 @@ def main():
 
         # get the playlist info -> song info from playlist -> audio features from songs
         playlist_ids = get_playlist_ids(sp)
-        list_tracks = get_playlist_tracks(playlist_ids, sp)
-        track_features = get_track_features(list_tracks, sp)
+        tracks = get_playlist_tracks(playlist_ids, sp)
+        list_tracks = get_track_list(tracks)
+        track_features = get_all_track_features(list_tracks, sp)
 
         # insert track data, into track table
         InTracksTable.insert_song_data_to_db(track_features)
