@@ -1,6 +1,6 @@
 import db_files.db_utils as db
-from Menus.menus import Menus
-from Messages.messages import Messages
+from Displays.menus import *
+from Displays.messages import *
 import re
 import sys
 
@@ -18,7 +18,7 @@ class User:
 
     @staticmethod
     def has_account():
-        Menus.has_account_menu()
+        has_account_menu()
         try:
             account = input('').lower().strip()
             if account == "1" or account == 'yes' or account == 'y':
@@ -26,12 +26,12 @@ class User:
             elif account == "2" or account == 'no' or account == 'n':
                 return False
             elif account == "3" or account == "q" or account == "quit":
-                Messages.quit_msg()
+                quit_msg()
                 raise sys.exit()
             else:
                 raise ValueError
         except ValueError:
-            Messages.has_account_error_msg()
+            has_account_error_msg()
             User.has_account()
 
     def set_username(self):
@@ -43,7 +43,7 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.invalid_username_msg()
+            invalid_username_msg()
             self.set_username()
 
     @staticmethod
@@ -62,7 +62,7 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.invalid_password_msg()
+            invalid_password_msg()
             self.set_password()
 
     @staticmethod
@@ -81,7 +81,7 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.try_email_again_msg()
+            try_email_again_msg()
             self.set_email()
 
     @staticmethod
@@ -93,18 +93,18 @@ class User:
             return True
 
     def wants_to_login(self):
-        Menus.wants_to_login_menu()
+        wants_to_login_menu()
         user_answer = input('')
         try:
             if user_answer == '1':
                 return True
             elif user_answer == '2':
-                Messages.quit_msg()
+                quit_msg()
                 return False
             else:
                 raise ValueError
         except ValueError:
-            print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
+            wants_to_login_error_msg()
             self.wants_to_login()
 
     def login(self):
@@ -118,10 +118,10 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.incorrect_password()
+            incorrect_password_msg()
             self.login()
         except IndexError:
-            Messages.username_not_recognised()
+            username_not_recognised_msg()
             self.login()
 
     def entry_made(self):
@@ -132,7 +132,7 @@ class User:
 
     @staticmethod
     def end_menu_choices():
-        Menus.end_menu()
+        end_menu()
         user_answer = input('')
         try:
             if user_answer == '1':
@@ -142,11 +142,10 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.end_menu_choices_error_msg()
+            end_menu_choices_error_msg()
             User.end_menu_choices()
 
     def logout(self):
-        # if not User.end_menu_choices():
         self.username = None
         self.password = None
         self.email = None
@@ -155,4 +154,4 @@ class User:
         self.mood_score = None
         self.entry_done = False
         self.date = None
-        Messages.quit_msg()
+        quit_msg()

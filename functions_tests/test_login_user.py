@@ -239,12 +239,9 @@ class TestEndMenuChoices(TestCase):
 
 class TestLogoutFunction(TestCase):
 
-    @patch("functions_tests.login_user.User.end_menu_choices")
-    def test_logout(self, mock_end_menu_choice):
-        mock_end_menu_choice.return_value = False
+    def test_logout(self):
         a_user = User()
         expected = None
         result = a_user.logout()
 
         self.assertEqual(expected, result)
-
