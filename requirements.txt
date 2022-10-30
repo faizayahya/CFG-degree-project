@@ -1,3 +1,4 @@
-spotipy
-requests
-mysql-connector-python
+spotipy~=2.20.0
+requests~=2.28.1
+mysql-connector-python~=8.0.31
+prettytable~=3.5.0
