@@ -1,15 +1,16 @@
-from functions.track_features import get_track_list
 from functions_tests.sentiment_analysis import *
 from functions_tests.spotify_connect import *
 from functions_tests.track_features import *
 from functions_tests.create_playlist import create_playlist, select_mood_tracks, get_full_tracklist
 from functions_tests.login_user import User
-from Messages.messages import Messages
+from Displays.messages import *
+from Displays.prints import create_history_table, welcome
 from db_files.db_utils import InPlaylistsTable, InAccountsTable, InTracksTable
 from datetime import date
 
 
 def main():
+    welcome()
     # authenticate spotify and get user and date details
     sp = authenticate_spotify()
     user = get_user_id(sp)
@@ -24,10 +25,10 @@ def main():
     if current_user.has_account():
         current_user.login()
     else:
-        Messages.register_msg()
+        register_msg()
         current_user.set_username()
         if InAccountsTable.username_in_db_check(current_user.username):
-            Messages.duplicate_username_msg()
+            duplicate_username_msg()
             if current_user.wants_to_login():
                 current_user.login()
             else:
@@ -35,8 +36,10 @@ def main():
         else:
             current_user.set_password()
             current_user.set_email()
-            InAccountsTable.insert_new_user_to_db(current_user.username, current_user.password, current_user.email)
-            Messages.new_account_success_msg()
+            InAccountsTable.insert_new_user_to_db(current_user.username,
+                                                  current_user.password,
+                                                  current_user.email)
+            new_account_success_msg()
             current_user.logged_in = True
 
     # check if entry has already been made today by current user
@@ -69,16 +72,23 @@ def main():
         current_user.playlist = "https://open.spotify.com/playlist/{}".format(new_playlist_id)
 
         # insert playlist data, mood, user in playlist table
-        InPlaylistsTable.insert_playlist_to_db(current_user.username, current_user.playlist,
-                                               current_user.mood_score, current_user.date)
+        InPlaylistsTable.insert_playlist_to_db(current_user.username,
+                                               current_user.playlist,
+                                               current_user.mood_score,
+                                               current_user.date)
 
         # link to the new playlist
         print('\nPlay your new playlist at https://open.spotify.com/playlist/{}\n\n'.format(new_playlist_id))
 
-        current_user.logout()
     else:
-        Messages.entry_already_made_msg()
-        current_user.end_menu_choices()
+        entry_already_made_msg()
+
+    if current_user.end_menu_choices():
+        user_history = (InPlaylistsTable.fetch_playlist_mood_data(current_user.username))
+        print()
+        print(create_history_table(user_history))
+
+    current_user.logout()
 
 
 if __name__ == "__main__":

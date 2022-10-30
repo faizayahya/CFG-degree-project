@@ -1,6 +1,5 @@
 import mysql.connector
-# from db_files.db_config import USER, PASSWORD, HOST
-from db_config import USER, PASSWORD, HOST
+from db_files.db_config import USER, PASSWORD, HOST
 
 
 class DbConnectionError(Exception):
@@ -90,7 +89,6 @@ class InAccountsTable:
                 else:
                     raise PasswordError
             except PasswordError:
-                print("Incorrect password, please logging in again")
                 return False
 
         finally:
@@ -167,7 +165,8 @@ class InPlaylistsTable:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""SELECT date, playlist_link, mood FROM playlists WHERE username = '{username}'"""
+            query = f"""SELECT date, mood_score, link FROM playlists WHERE username = '{username}'
+            ORDER BY date DESC """
 
             my_cursor.execute(query)
             result = my_cursor.fetchall()
@@ -250,5 +249,3 @@ class InTracksTable:
         finally:
             if db_conx:
                 db_conx.close()
-
-InPlaylistsTable.get_last_7_days()

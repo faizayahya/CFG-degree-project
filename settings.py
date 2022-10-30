@@ -1,8 +1,7 @@
 import os
-
-# sentiment analysis keys
-
+# my settings:
 rapid_headers = {
+
     "X-RapidAPI-Key": "XXX",
     "X-RapidAPI-Host": "twinword-sentiment-analysis.p.rapidapi.com"
 }

@@ -1,24 +1,9 @@
 import db_files.db_utils as db
-from menus.menus import Menus
-from messages.messages import Messages
+from Displays.menus import *
+from Displays.messages import *
 import re
 import sys
 
-
-#               12 functions:
-
-#               has_account
-#               set_username
-#               username_valid
-#               set_password
-#               password_valid
-#               set_email
-#               email_is_valid
-#               wants_to_login
-#               login
-#               entry_made
-#               end_menu_choices
-#               logout
 
 class User:
     def __init__(self):
@@ -33,7 +18,7 @@ class User:
 
     @staticmethod
     def has_account():
-        Menus.has_account_menu()
+        has_account_menu()
         try:
             account = input('').lower().strip()
             if account == "1" or account == 'yes' or account == 'y':
@@ -41,22 +26,25 @@ class User:
             elif account == "2" or account == 'no' or account == 'n':
                 return False
             elif account == "3" or account == "q" or account == "quit":
-                Messages.quit_msg()
-                return sys.exit()
+                quit_msg()
+                raise sys.exit()
             else:
                 raise ValueError
         except ValueError:
-            Messages.has_account_error_msg()
-            return User.has_account()
+            has_account_error_msg()
+            User.has_account()
 
     def set_username(self):
         possible_username = input('Set a username:')
-        if not User.username_valid(possible_username):
-            Messages.invalid_username_msg()
-            return self.set_username()
-        else:
-            self.username = possible_username
-            return self.username
+        try:
+            if User.username_valid(possible_username):
+                self.username = possible_username
+                return self.username
+            else:
+                raise ValueError
+        except ValueError:
+            invalid_username_msg()
+            self.set_username()
 
     @staticmethod
     def username_valid(possible_username):
@@ -67,28 +55,34 @@ class User:
 
     def set_password(self):
         possible_password = input('Set a password:')
-        if not User.password_valid(possible_password):
-            Messages.invalid_password_msg()
-            return self.set_password()
-        else:
-            self.password = possible_password
-            return self.password
+        try:
+            if User.password_valid(possible_password):
+                self.password = possible_password
+                return self.password
+            else:
+                raise ValueError
+        except ValueError:
+            invalid_password_msg()
+            self.set_password()
 
     @staticmethod
     def password_valid(possible_password):
-        if len(possible_password) < 4:
+        if len(possible_password) < 4 or len(possible_password) > 15:
             return False
         else:
             return True
 
     def set_email(self):
         possible_email = input('Please write your email address:')
-        if not User.email_is_valid(possible_email):
-            Messages.try_email_again_msg()
-            return self.set_email()
-        else:
-            self.email = possible_email
-            return self.email
+        try:
+            if User.email_is_valid(possible_email):
+                self.email = possible_email
+                return self.email
+            else:
+                raise ValueError
+        except ValueError:
+            try_email_again_msg()
+            self.set_email()
 
     @staticmethod
     def email_is_valid(email_entry):
@@ -99,27 +93,35 @@ class User:
             return True
 
     def wants_to_login(self):
-        Menus.wants_to_login_menu()
+        wants_to_login_menu()
         user_answer = input('')
         try:
             if user_answer == '1':
                 return True
             elif user_answer == '2':
-                Messages.quit_msg()
+                quit_msg()
                 return False
             else:
                 raise ValueError
         except ValueError:
-            print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
-            return self.wants_to_login()
+            wants_to_login_error_msg()
+            self.wants_to_login()
 
     def login(self):
-        self.username = input('Please enter your username:')
-        self.password = input('Please enter your password:')
-        account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
-        if account_authenticated:
-            self.logged_in = True
-        else:
+        try:
+            self.username = input('Please enter your username:')
+            self.password = input('Please enter your password:')
+            account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
+            if account_authenticated:
+                self.logged_in = True
+                return self.logged_in
+            else:
+                raise ValueError
+        except ValueError:
+            incorrect_password_msg()
+            self.login()
+        except IndexError:
+            username_not_recognised_msg()
             self.login()
 
     def entry_made(self):
@@ -130,28 +132,26 @@ class User:
 
     @staticmethod
     def end_menu_choices():
-        Menus.end_menu()
+        end_menu()
         user_answer = input('')
         try:
             if user_answer == '1':
-                # return True
-                # go to look at playlist and mood history
-                # pass  # for now
-                return False
+                return True
             elif user_answer == '2':
                 return False
+            else:
+                raise ValueError
         except ValueError:
-            Messages.end_menu_choices_error_msg()
-            return User.end_menu_choices()
+            end_menu_choices_error_msg()
+            User.end_menu_choices()
 
     def logout(self):
-        if not User.end_menu_choices():
-            self.username = None
-            self.password = None
-            self.email = None
-            self.logged_in = False
-            self.playlist = None
-            self.mood_score = None
-            self.entry_done = False
-            self.date = None
-            Messages.quit_msg()
+        self.username = None
+        self.password = None
+        self.email = None
+        self.logged_in = False
+        self.playlist = None
+        self.mood_score = None
+        self.entry_done = False
+        self.date = None
+        quit_msg()
