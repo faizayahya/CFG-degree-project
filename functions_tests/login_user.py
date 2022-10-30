@@ -62,7 +62,7 @@ class User:
             else:
                 raise ValueError
         except ValueError:
-            Messages.invalid_username_msg()
+            Messages.invalid_password_msg()
             self.set_password()
 
     @staticmethod
@@ -136,10 +136,7 @@ class User:
         user_answer = input('')
         try:
             if user_answer == '1':
-                # return True
-                # go to look at playlist and mood history
-                # pass  # for now
-                return False
+                return True
             elif user_answer == '2':
                 return False
             else:
@@ -149,13 +146,13 @@ class User:
             User.end_menu_choices()
 
     def logout(self):
-        if not User.end_menu_choices():
-            self.username = None
-            self.password = None
-            self.email = None
-            self.logged_in = False
-            self.playlist = None
-            self.mood_score = None
-            self.entry_done = False
-            self.date = None
-            Messages.quit_msg()
+        # if not User.end_menu_choices():
+        self.username = None
+        self.password = None
+        self.email = None
+        self.logged_in = False
+        self.playlist = None
+        self.mood_score = None
+        self.entry_done = False
+        self.date = None
+        Messages.quit_msg()

@@ -4,6 +4,8 @@ from unittest.mock import Mock, patch
 from functions_tests.login_user import User
 
 # TESTS FOR ALL FUNCTIONS IN THE login_user.py FILE
+# TODO LINE 221 END MENU CHOICES WHEN I HAVE DONE THE TABLE STUFF FOR DISPLAYING PAST PLAYLISTS
+
 
 class TestHasAccountFunction(TestCase):
     def test_input_1_true(self):
@@ -216,9 +218,9 @@ class TestEntryMadeFunction(TestCase):
 
 class TestEndMenuChoices(TestCase):
 
-    # def test_input_1_true(self):  # Valid Input
-    #     with patch("builtins.input", side_effect=["1"]):
-    #         self.assertFalse(User.end_menu_choices())
+    def test_input_1_true(self):  # Valid Input
+        with patch("builtins.input", side_effect=["1"]):
+            self.assertTrue(User.end_menu_choices())
 
     def test_input_2_false(self):
         with patch("builtins.input", side_effect=["2"]):
