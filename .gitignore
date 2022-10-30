@@ -1,5 +1,5 @@
-functions/settings.py
+settings.py
 .cache
 env
 __pycache__
-db_files.db_config.py
+db_files/db_config.py

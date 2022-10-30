@@ -1,5 +1,6 @@
 import mysql.connector
-from db_files.db_config import USER, PASSWORD, HOST
+# from db_files.db_config import USER, PASSWORD, HOST
+from db_config import USER, PASSWORD, HOST
 
 
 class DbConnectionError(Exception):
@@ -136,6 +137,28 @@ class InPlaylistsTable:
             if db_conx:
                 db_conx.close()
 
+    @staticmethod
+    def get_last_7_days(username):
+
+        try:
+            db_conx = Database.connect_to_db()
+            my_cursor = db_conx.cursor()
+
+            query = f"""SELECT {username}, date, mood FROM playlists 
+            WHERE date>=DATEADD(DAY,-7,GETDATE()) AND mood < -0.3"""
+
+            my_cursor.execute(query)
+            result = my_cursor.fetchall()
+
+            return [''.join(x) for x in result]
+
+        except Exception:
+            raise DbConnectionError("Failed to read data from DB")
+
+        finally:
+            if db_conx:
+                db_conx.close()
+
 
 
     @staticmethod
@@ -169,7 +192,7 @@ class InPlaylistsTable:
             my_cursor.execute(query)
             result = my_cursor.fetchall()
 
-            if result == []:  # if there is no result that means no entry made by user
+            if not result:  # if there is no result that means no entry made by user
                 return False
             else:
                 return True
@@ -182,15 +205,18 @@ class InPlaylistsTable:
 
 class InTracksTable:
     @staticmethod
-    def insert_song_data_to_db(song_name, song_uri, danceability, energy, valence):
+    def insert_song_data_to_db(track_object_list):
         try:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
+            for track in track_object_list:
+                if track.name.count("\"") < 1:  # checking track name contains no double quotes
+                    query = f"""INSERT IGNORE INTO tracks (song_name, song_uri, energy, valence, danceability)
+                    VALUES ("{track.name}", '{track.uri}', {track.energy}, {track.valence}, {track.danceability});"""
+                    my_cursor.execute(query)
+                else:
+                    continue
 
-            query = f"""INSERT INTO tracks (song_name, song_uri, danceability, energy, valence) 
-            VALUES {song_name}, {song_uri}, {danceability}, {energy}, {valence}"""
-
-            my_cursor.execute(query)
             db_conx.commit()
 
         except Exception:
@@ -199,3 +225,30 @@ class InTracksTable:
         finally:
             if db_conx:
                 db_conx.close()
+
+    @staticmethod
+    def get_mood_tracks(mood_score):
+        try:
+            db_conx = Database.connect_to_db()
+            my_cursor = db_conx.cursor()
+            if mood_score > 0.05:
+                query = """SELECT song_uri FROM tracks WHERE danceability > 0.5 AND valence > 0.5"""
+            elif mood_score < -0.05:
+                query = """SELECT song_uri FROM tracks WHERE danceability < 0.5 AND valence < 0.5"""
+            else:
+                if -0.05 < mood_score < 0.05:
+                    query = """SELECT song_uri FROM tracks WHERE danceability BETWEEN 0.3 AND 0.6 AND valence BETWEEN 0.3 AND 0.6"""
+
+            my_cursor.execute(query)
+            result = my_cursor.fetchall()
+            track_uris = [''.join(uri) for uri in result]
+            return track_uris
+
+        except Exception:
+            raise DbConnectionError("Failed to read data from DB")
+
+        finally:
+            if db_conx:
+                db_conx.close()
+
+InPlaylistsTable.get_last_7_days()

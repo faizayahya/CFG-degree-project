@@ -24,10 +24,10 @@ class Track:
 
 
 def get_playlist_tracks(playlist_ids, sp):
-    list_tracks = []
     for playlist in playlist_ids:
         tracks = sp.playlist_items(playlist, fields=None, limit=10, offset=0, market='GB',
                                    additional_types=('track', 'episode'))
+<<<<<<< HEAD:track_features.py
         for track in tracks['items']:
             song = track['track']
             if song is not None:
@@ -37,6 +37,18 @@ def get_playlist_tracks(playlist_ids, sp):
                 obj.get_track_uri(song)
                 list_tracks.append(obj)
 
+=======
+    return tracks
+def get_track_list(tracks):
+    list_tracks = []
+    for track in tracks['items']:
+        song = track['track']
+        if song is not None:
+            obj = Track()
+            obj.get_track_name(song)
+            obj.get_track_uri(song)
+            list_tracks.append(obj)
+>>>>>>> aac25aa85e00a7f1a66003e39f817315ac3b605c:functions/track_features.py
     return list_tracks
 
 
@@ -49,8 +61,8 @@ def get_all_track_features(track_object_list, sp):
             track_object.get_energy(features)
             track_object.get_valence(features)
 
+<<<<<<< HEAD:track_features.py
     return track_object_list
-
 
 # Something in the Water spotify:track:5z7wmSmPWHgTFz5iOKHhAz 0.573 0.739 0.591
 # NIGHTS LIKE THESE spotify:track:33vZRjxJScapmRShRJq8I0 0.458 0.667 0.593
@@ -153,3 +165,6 @@ def get_all_track_features(track_object_list, sp):
 # Love Like This spotify:track:0eVoQFUtCL9Bpwky003Ows 0.604 0.664 0.733
 # This Is What They Meant spotify:track:0tZHm9L4ssbjBoJ2N5vOiK 0.82 0.68 0.79
 # Footloose - From "Footloose" Soundtrack spotify:track:4YR6Dextuoc3I8nJ0XgzKI 0.911 0.582 0.564
+=======
+        return track_object_list
+>>>>>>> aac25aa85e00a7f1a66003e39f817315ac3b605c:functions/track_features.py

@@ -4,21 +4,11 @@ from messages.messages import Messages
 import re
 import sys
 
-
-#               12 functions:
-
-#               has_account
-#               set_username
-#               username_valid
-#               set_password
-#               password_valid
-#               set_email
-#               email_is_valid
-#               wants_to_login
-#               login
-#               entry_made
-#               end_menu_choices
-#               logout
+#               8 functions:
+#       has_account           register
+#       email_is_valid        wants_to_login
+#       login                 entry_made,
+#       end_menu_choices      logout
 
 class User:
     def __init__(self):
@@ -43,52 +33,35 @@ class User:
             elif account == "3" or account == "q" or account == "quit":
                 Messages.quit_msg()
                 return sys.exit()
-            else:
-                raise ValueError
         except ValueError:
             Messages.has_account_error_msg()
             return User.has_account()
 
-    def set_username(self):
-        possible_username = input('Set a username:')
-        if not User.username_valid(possible_username):
-            Messages.invalid_username_msg()
-            return self.set_username()
-        else:
-            self.username = possible_username
-            return self.username
+    def register(self):
+        Messages.set_uname_pword_msg()
+        self.username = input('Set a username:')
 
-    @staticmethod
-    def username_valid(possible_username):
-        if len(possible_username) < 3 or len(possible_username) > 10 or not possible_username.isalnum():
-            return False
-        else:
-            return True
+        account_exists = db.InAccountsTable.username_in_db_check(self.username)
+        if account_exists:
+            Messages.duplicate_username_msg()
+            if self.wants_to_login():
+                self.login()
+            else:
+                exit()
 
-    def set_password(self):
-        possible_password = input('Set a password:')
-        if not User.password_valid(possible_password):
-            Messages.invalid_password_msg()
-            return self.set_password()
         else:
-            self.password = possible_password
-            return self.password
+            self.password = input('Set a password:')
+            email_entry = input('Please write your email address:')
 
-    @staticmethod
-    def password_valid(possible_password):
-        if len(possible_password) < 4:
-            return False
-        else:
-            return True
+            if User.email_is_valid(email_entry):
+                self.logged_in = True
+                self.email = email_entry
+                db.InAccountsTable.insert_new_user_to_db(self.username, self.password, self.email)
+                Messages.new_account_success_msg()
 
-    def set_email(self):
-        possible_email = input('Please write your email address:')
-        if not User.email_is_valid(possible_email):
-            Messages.try_email_again_msg()
-            return self.set_email()
-        else:
-            self.email = possible_email
-            return self.email
+            else:
+                Messages.try_email_again_msg()
+                return self.register()
 
     @staticmethod
     def email_is_valid(email_entry):
@@ -105,10 +78,10 @@ class User:
             if user_answer == '1':
                 return True
             elif user_answer == '2':
+                return self.register()
+            elif user_answer == '3':
                 Messages.quit_msg()
                 return False
-            else:
-                raise ValueError
         except ValueError:
             print('Please enter 1 to Login, 2 to register with a different account, or 3 for Quit')
             return self.wants_to_login()
@@ -116,11 +89,8 @@ class User:
     def login(self):
         self.username = input('Please enter your username:')
         self.password = input('Please enter your password:')
-        account_authenticated = db.InAccountsTable.authenticate_login_in_db(self.username, self.password)
-        if account_authenticated:
+        if db.InAccountsTable.authenticate_login_in_db(self.username, self.password):
             self.logged_in = True
-        else:
-            self.login()
 
     def entry_made(self):
         if db.InPlaylistsTable.entry_made_check_db(self.username, self.date):
