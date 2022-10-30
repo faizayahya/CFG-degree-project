@@ -1,11 +1,11 @@
 from functions_tests.sentiment_analysis import *
 from functions_tests.spotify_connect import *
 from functions_tests.track_features import *
-from functions_tests.create_playlist import create_playlist, select_mood_tracks
+from functions_tests.create_playlist import create_playlist, select_mood_tracks, get_full_tracklist
 from functions_tests.login_user import User
 from Displays.messages import *
-from db_files.db_utils import InPlaylistsTable, InAccountsTable
 from Displays.prints import create_history_table, welcome
+from db_files.db_utils import InPlaylistsTable, InAccountsTable, InTracksTable
 from datetime import date
 
 
@@ -60,8 +60,12 @@ def main():
         list_tracks = get_track_list(tracks)
         track_features = get_all_track_features(list_tracks, sp)
 
+        # insert track data, into track table
+        InTracksTable.insert_song_data_to_db(track_features)
+
         # get the track lists based on an algo and creates a spotify playlist
-        track_list = select_mood_tracks(mood, track_features)
+        track_list_api = select_mood_tracks(mood, track_features)
+        track_list = get_full_tracklist(track_list_api, mood)
         new_playlist_id = create_playlist(sp, user, name, track_list[:20])
 
         # set user playlist attribute
@@ -96,5 +100,5 @@ if __name__ == "__main__":
     # print(f"logged in?: {current_user.logged_in}")
     # print(f"username: {current_user.username}")
     # # print(f"email: {current_user.email}")
-    # # print(f"pword: {current_user.password}")
+    # # print(f"pword: {current_user.password}")1
     # print(f"date: {current_user.date}")
