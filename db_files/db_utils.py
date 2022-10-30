@@ -1,6 +1,5 @@
 import mysql.connector
-# from db_files.db_config import USER, PASSWORD, HOST
-from db_config import USER, PASSWORD, HOST
+from db_files.db_config import USER, PASSWORD, HOST
 
 
 class DbConnectionError(Exception):
@@ -250,5 +249,3 @@ class InTracksTable:
         finally:
             if db_conx:
                 db_conx.close()
-
-InPlaylistsTable.get_last_7_days()
