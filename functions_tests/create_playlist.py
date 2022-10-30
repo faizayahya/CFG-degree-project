@@ -1,4 +1,5 @@
 import random
+from collections import Counter
 from db_files.db_utils import InTracksTable
 
 def select_mood_tracks(mood_score, tracks):
@@ -23,11 +24,18 @@ def get_full_tracklist(track_objects, mood_score):
         track_list_uris.append(track.uri)
 
     db_tracks = InTracksTable.get_mood_tracks(mood_score=mood_score)
-    track_list_uris.append(db_tracks)
 
-    random.shuffle(track_list_uris)
+    compiled_track_list_uris = track_list_uris + db_tracks
 
-    return track_list_uris
+    counter = Counter(compiled_track_list_uris)
+    for value in counter.values():
+        if value > 1:
+            compiled_track_list_uris = list(set(compiled_track_list_uris))
+            break
+
+    random.shuffle(compiled_track_list_uris)
+
+    return compiled_track_list_uris
 
 
 def create_playlist(sp, username, playlist_name, track_list_uris):

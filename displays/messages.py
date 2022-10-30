@@ -62,3 +62,10 @@ def something_went_wrong_msg():
 
 def username_not_recognised_msg():
     print("\nWe don't recognise that username. Please try again\n")
+
+def show_helplines():
+    print("You've been experiencing some negative moods lately, so we wanted to check in. "
+          "You can use any of the following resources or helplines if you need to talk right now\n"
+          "Samaritans: Call 116 123\n"
+          "SANELine: Call 0300 304 7000\n"
+          "National Suicide Prevention Helpline UK: Call 0800 689 5652\n")

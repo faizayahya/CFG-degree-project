@@ -1,6 +1,6 @@
 import db_files.db_utils as db
-from Displays.menus import *
-from Displays.messages import *
+from displays.menus import *
+from displays.messages import *
 import re
 import sys
 
