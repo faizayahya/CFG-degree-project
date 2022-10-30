@@ -143,7 +143,8 @@ class InPlaylistsTable:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""SELECT date, playlist_link, mood FROM playlists WHERE username = '{username}'"""
+            query = f"""SELECT date, mood_score, link FROM playlists WHERE username = '{username}'
+            ORDER BY date DESC """
 
             my_cursor.execute(query)
             result = my_cursor.fetchall()
