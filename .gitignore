@@ -3,3 +3,4 @@ env
 __pycache__
 db_files/db_config.py
 settings.py
+.idea/*
