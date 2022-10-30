@@ -4,7 +4,6 @@ from unittest.mock import Mock, patch
 from functions_tests.login_user import User
 
 # TESTS FOR ALL FUNCTIONS IN THE login_user.py FILE
-# TODO LINE 221 END MENU CHOICES WHEN I HAVE DONE THE TABLE STUFF FOR DISPLAYING PAST PLAYLISTS
 
 
 class TestHasAccountFunction(TestCase):
