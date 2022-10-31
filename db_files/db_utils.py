@@ -1,6 +1,7 @@
 import mysql.connector
 from db_files.db_config import USER, PASSWORD, HOST
-
+# from db_config import USER, PASSWORD, HOST
+from collections import namedtuple
 
 class DbConnectionError(Exception):
     pass
@@ -135,6 +136,7 @@ class InPlaylistsTable:
             if db_conx:
                 db_conx.close()
 
+
     @staticmethod
     def get_last_7_days(username):
 
@@ -142,13 +144,22 @@ class InPlaylistsTable:
             db_conx = Database.connect_to_db()
             my_cursor = db_conx.cursor()
 
-            query = f"""SELECT {username}, date, mood FROM playlists 
-            WHERE date>=DATEADD(DAY,-7,GETDATE()) AND mood < -0.3"""
+            query = f"""SELECT date, mood_score FROM playlists 
+            WHERE username = '{username}' AND date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND mood_score < -0.3"""
 
             my_cursor.execute(query)
             result = my_cursor.fetchall()
 
-            return [''.join(x) for x in result]
+            # return [''.join(x) for x in result]
+            Date = namedtuple('Date', 'date' 'mood_score')
+
+            dates = []
+            for i in result:
+                x = Date(i)
+                dates.append(x)
+
+            return dates
+
 
         except Exception:
             raise DbConnectionError("Failed to read data from DB")
@@ -249,3 +260,5 @@ class InTracksTable:
         finally:
             if db_conx:
                 db_conx.close()
+
+# print(InPlaylistsTable.get_last_7_days('aals'))

@@ -3,8 +3,8 @@ from functions_tests.spotify_connect import *
 from functions_tests.track_features import *
 from functions_tests.create_playlist import create_playlist, select_mood_tracks, get_full_tracklist
 from functions_tests.login_user import User
-from Displays.messages import *
-from Displays.prints import create_history_table, welcome
+from displays.messages import *
+from displays.prints import create_history_table, welcome
 from db_files.db_utils import InPlaylistsTable, InAccountsTable, InTracksTable
 from datetime import date
 
@@ -57,8 +57,8 @@ def main():
         # get the playlist info -> song info from playlist -> audio features from songs
         playlist_ids = get_playlist_ids(sp)
         tracks = get_playlist_tracks(playlist_ids, sp)
-        list_tracks = get_track_list(tracks)
-        track_features = get_all_track_features(list_tracks, sp)
+        # list_tracks = get_track_list(tracks)
+        track_features = get_all_track_features(tracks, sp)
 
         # insert track data, into track table
         InTracksTable.insert_song_data_to_db(track_features)
@@ -82,6 +82,9 @@ def main():
 
     else:
         entry_already_made_msg()
+
+    if len(InPlaylistsTable.get_last_7_days(current_user.username)) > 5:
+        show_helplines()
 
     if current_user.end_menu_choices():
         user_history = (InPlaylistsTable.fetch_playlist_mood_data(current_user.username))
